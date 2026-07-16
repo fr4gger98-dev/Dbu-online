@@ -20,8 +20,6 @@
     --text-light: #777;
     --border: #dde3e8;
   }
-  /* Sticky nav is ~66px tall — give every anchor target breathing room so
-     clicking a nav/footer link doesn't land with its heading hidden under it. */
   #about-intro, #accreditations, #programs, #admission, #faq, #contact {
     scroll-margin-top: 86px;
   }
@@ -31,13 +29,8 @@
   body { font-family: 'Inter', sans-serif; color: var(--text-dark); background: #fff; }
   a { text-decoration: none; color: inherit; }
 
-  /* Safety net: an <svg> with only a viewBox and no explicit size will,
-     in some load-order edge cases, paint at a huge intrinsic default size
-     before its real CSS rule has applied. Capping max-width/height here
-     means it can never blow up past its own container even for a frame. */
   svg { max-width: 100%; max-height: 100%; }
 
-  /* ── ANIMATED ICON SYSTEM (replaces emoji glyphs site-wide) ── */
   .aicon {
     display: inline-flex;
     align-items: center;
@@ -57,7 +50,6 @@
 
   .top-bar a .aicon { animation: iconFloat 2.4s ease-in-out infinite; }
 
-  /* ── TOP BAR ── */
   .top-bar {
     background: var(--navy);
     color: #fff;
@@ -76,7 +68,6 @@
     font-weight: 600; font-size: 12px; animation: pulse 2s infinite;
   }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.75} }
-  /* TOP BAR ANIMATION */
 .top-bar {
   animation: slideDownFade 0.6s ease-out;
 }
@@ -136,19 +127,22 @@
 
  /* ── NAVBAR ── */
   nav {
-    background: #02446c; box-shadow: 0 2px 12px rgba(0,0,0,.25);
+    background: #02446c;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 1px 0 rgba(255,255,255,.04) inset, 0 4px 16px rgba(0,0,0,.18);
     position: sticky; top: 0; z-index: 1000;
   }
   .nav-inner {
-    max-width: 1200px; margin: 0 auto; padding: 0 20px;
+    width: 100%; margin: 0; padding: 0 32px;
     display: flex; align-items: center; justify-content: space-between;
-    height: 72px; gap: 24px;
+    height: 76px; gap: 24px;
+    box-sizing: border-box;
   }
   .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; height: 100%; }
   .logo a { display: flex; align-items: center; height: 100%; }
   .logo img,
   #navLogoImg {
-    height: 44px; width: auto; max-height: 100%;
+    height: 42px; width: auto; max-height: 100%;
     object-fit: contain; display: block;
   }
   .logo-icon {
@@ -160,9 +154,13 @@
   .logo-text strong { display: block; color: #fff; font-size: 15px; font-weight: 800; font-family: 'Poppins',sans-serif; }
   .logo-text span { color: #a9c9e2; font-size: 11px; font-weight: 600; letter-spacing: .5px; }
 
+ .nav-right-group {
+    display: flex; align-items: center; gap: 34px;
+    margin-left: auto; height: 100%;
+  }
  .nav-links {
-    display: flex; align-items: center; gap: 28px; list-style: none;
-    margin: 0 0 0 auto; padding: 0; height: 100%;
+    display: flex; align-items: center; gap: 34px; list-style: none;
+    margin: 0; padding: 0; height: 100%;
   }
   .nav-links li {
     display: flex; align-items: center; height: 100%;
@@ -179,18 +177,19 @@
     position: relative;
     display: inline-flex; align-items: center;
     text-decoration: none;
-    font-size: 14px; font-weight: 500; line-height: 1;
-    color: #e6eef4;
-    padding: 4px 2px;
-    transition: color .2s, transform 0.25s ease;
+    font-size: 14px; font-weight: 600; line-height: 1; letter-spacing: .15px;
+    color: rgba(255,255,255,.82);
+    padding: 6px 2px;
+    transition: color .2s ease;
   }
-  .nav-links a:hover { color: #fff; transform: translateY(-2px); }
+  .nav-links a:hover { color: #fff; }
 
   .nav-links a::after {
     content: '';
-    position: absolute; left: 0; bottom: 0;
+    position: absolute; left: 0; bottom: -2px;
     width: 100%; height: 2px;
-    background: currentColor;
+    background: var(--gold, #e0932e);
+    border-radius: 2px;
     transform: scaleX(0);
     transform-origin: right;
     transition: transform 0.3s ease;
@@ -207,19 +206,20 @@
     flex-shrink: 0;
     text-decoration: none;
     background: var(--red); color: #fff;
-    padding: 10px 22px; border-radius: 6px;
-    font-weight: 700; font-size: 14px; line-height: 1;
+    padding: 11px 24px; border-radius: 7px;
+    font-weight: 700; font-size: 14px; line-height: 1; letter-spacing: .2px;
     white-space: nowrap;
     opacity: 0;
-    animation: ctaFadeIn 0.6s ease-out 0.55s both, arrowNudge 2s ease-in-out 1.2s infinite;
-    transition: background .2s, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 10px rgba(226,99,44,.35);
+    animation: ctaFadeIn 0.6s ease-out 0.55s both;
+    transition: background .2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   }
   .nav-cta:hover {
     background: #b8501f;
-    transform: translateY(-3px) scale(1.04);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,.2);
   }
-  .nav-cta:active { transform: translateY(-1px) scale(0.98); }
+  .nav-cta:active { transform: translateY(0); }
 
   .nav-cta::before {
     content: '';
@@ -236,10 +236,59 @@
   }
   .nav-cta:hover::before { left: 125%; }
 
+  /* ── MOBILE MENU TOGGLE ── */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px; height: 40px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 8px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .nav-toggle span {
+    display: block; width: 18px; height: 2px;
+    background: #fff; border-radius: 2px;
+    transition: transform .3s ease, opacity .3s ease;
+  }
+  .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .nav-mobile-panel {
+    display: none;
+    position: fixed;
+    top: 76px; left: 0; right: 0; z-index: 999;
+    background: #02446c;
+    border-top: 1px solid rgba(255,255,255,.1);
+    box-shadow: 0 12px 30px rgba(0,0,0,.25);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .35s ease;
+  }
+  .nav-mobile-panel.open { max-height: 480px; }
+  .nav-mobile-panel ul {
+    list-style: none; margin: 0; padding: 10px 24px 18px;
+    display: flex; flex-direction: column;
+  }
+  .nav-mobile-panel li a {
+    display: block; padding: 13px 4px;
+    color: rgba(255,255,255,.9); font-size: 15px; font-weight: 600;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .nav-mobile-panel li:last-child a { border-bottom: none; }
+  .nav-mobile-panel .nav-cta {
+    margin: 6px 24px 18px; display: flex; opacity: 1; animation: none;
+  }
+
   /* ===== NAVBAR ENTRANCE ===== */
   nav { animation: navFadeDown 0.6s ease-out; }
   .logo img { animation: logoPop 0.7s ease-out 0.1s both; transition: transform 0.3s ease; }
-  .logo img:hover { transform: scale(1.06) rotate(-1deg); }
+  .logo img:hover { transform: scale(1.04); }
 
   /* ===== KEYFRAMES ===== */
   @keyframes navFadeDown {
@@ -257,10 +306,6 @@
   @keyframes ctaFadeIn {
     from { transform: translateY(-8px) scale(0.95); opacity: 0; }
     to   { transform: translateY(0) scale(1); opacity: 1; }
-  }
-  @keyframes arrowNudge {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(3px); }
   }
   /* ── HERO ── */
   .hero {
@@ -283,14 +328,12 @@
     border-radius: 50%;
     z-index: 0;
   }
-  /* Dark overlay so hero copy stays readable over any background photo */
   .hero-overlay {
     position: absolute;
     inset: 0;
     background: linear-gradient(100deg, rgba(2,20,38,.92) 0%, rgba(4,51,89,.88) 38%, rgba(4,51,89,.55) 65%, rgba(4,51,89,.35) 100%);
     z-index: 1;
   }
-  /* Hero banner carousel — stacked layers crossfade via JS every 3s */
   .hero-bg-carousel { position: absolute; inset: 0; z-index: 0; }
   .hero-bg-layer {
     position: absolute; inset: 0;
@@ -342,7 +385,6 @@
   }
   .btn-secondary:hover { background: rgba(255,255,255,.18); border-color: #fff; }
 
-  /* ── ENQUIRY FORM ── */
   .enquiry-card {
     background: #fff; border-radius: 14px; padding: 30px 28px;
     box-shadow: 0 20px 60px rgba(0,0,0,.25); position: relative;
@@ -392,7 +434,6 @@
   z-index: 2;
 }
 
-/* Slightly smaller heading/text so it scales nicely in a shorter hero */
 .hero h1 {
   font-family: 'Poppins', sans-serif;
   font-size: clamp(24px, 3.4vw, 40px);
@@ -425,7 +466,6 @@
   font-size: 14px;
 }
 
-/* Enquiry card shrinks to fit the shorter hero */
 .enquiry-card {
   background: #fff;
   border-radius: 14px;
@@ -465,7 +505,7 @@
 
 .hero::before,
 .hero::after {
-  display: none; /* remove the blue/red radial glows entirely */
+  display: none;
 }
 /* ── INTRO ABOUT (placed right after hero) ── */
 .intro-about { background: #fff; position: relative; overflow: hidden; }
@@ -477,7 +517,6 @@
   align-items: center;
 }
 
-/* ── Image collage block ── */
 .intro-collage {
   position: relative;
   opacity: 0;
@@ -567,7 +606,6 @@
   letter-spacing: .3px;
 }
 
-/* ── Text content block ── */
 .intro-content {
   opacity: 0;
   transform: translateX(40px);
@@ -620,7 +658,6 @@
 }
 .intro-content .btn-primary:hover::before { left: 125%; }
 
-/* ── Scroll-triggered reveal state (JS adds .in-view) ── */
 .intro-about.in-view .section-label,
 .intro-about.in-view .intro-collage,
 .intro-about.in-view .intro-content,
@@ -671,17 +708,176 @@
 .text-center { text-align: center; }
 .text-center .section-sub { margin: 0 auto; }
 
-/* ── PREVENT GLOBAL SECTION STYLES BLEEDING INTO PROGRAMS SECTION ── */
+/* ═══════════════════════════════════════════════════════════
+   UG / PG PROGRAMS — tabbed carousel with flip-to-details cards
+═══════════════════════════════════════════════════════════ */
+.ugpg-section { background: #fff; }
+
+.ugpg-tabs {
+  display: flex; justify-content: center; gap: 40px;
+  border-bottom: 1px solid var(--border);
+  margin: 28px 0 40px;
+}
+.ugpg-tab {
+  background: none; border: none; cursor: pointer;
+  font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700;
+  color: var(--text-light); padding: 0 2px 14px;
+  position: relative; transition: color .2s ease;
+}
+.ugpg-tab::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+  background: var(--navy); transform: scaleX(0); transition: transform .25s ease;
+}
+.ugpg-tab.active { color: var(--navy); }
+.ugpg-tab.active::after { transform: scaleX(1); }
+.ugpg-tab:hover { color: var(--navy); }
+
+.ugpg-panel { display: none; }
+.ugpg-panel.active { display: block; }
+
+.ugpg-carousel-wrap {
+  position: relative;
+  display: flex; align-items: center; gap: 10px;
+}
+.ugpg-arrow {
+  flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: #fff; border: 1.5px solid var(--border);
+  color: var(--navy);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all .2s ease;
+}
+.ugpg-arrow svg { width: 18px; height: 18px; }
+.ugpg-arrow:hover { background: var(--navy); color: #fff; border-color: var(--navy); transform: scale(1.06); }
+
+.ugpg-track {
+  flex: 1; min-width: 0;
+  display: flex; gap: 22px;
+  overflow-x: auto; overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  scroll-behavior: smooth;
+  padding: 6px 2px 14px;
+}
+.ugpg-track::-webkit-scrollbar { height: 6px; }
+.ugpg-track::-webkit-scrollbar-track { background: var(--light-bg); border-radius: 10px; }
+.ugpg-track::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 10px; }
+
+.ugpg-card {
+  flex: 0 0 calc(33.333% - 15px);
+  min-width: 280px;
+  scroll-snap-align: start;
+  perspective: 1800px;
+}
+.ugpg-card-inner {
+  position: relative;
+  min-height: 520px;
+  transition: transform .7s cubic-bezier(.34,1.1,.64,1);
+  transform-style: preserve-3d;
+}
+.ugpg-card.flipped .ugpg-card-inner { transform: rotateY(180deg); }
+
+.ugpg-card-front, .ugpg-card-back {
+  position: absolute; inset: 0;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border-radius: 12px; overflow: hidden;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(4,51,89,.05);
+  transition: box-shadow .25s, border-color .25s, transform .2s;
+  display: flex; flex-direction: column;
+}
+.ugpg-card:not(.flipped) .ugpg-card-front:hover {
+  box-shadow: 0 14px 34px rgba(4,51,89,.14);
+  border-color: var(--blue);
+  transform: translateY(-3px);
+}
+.ugpg-card-front { transform: rotateY(0deg); }
+.ugpg-card-back  { transform: rotateY(180deg); }
+
+.ugpg-card-img {
+  position: relative;
+  height: 176px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.ugpg-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ugpg-img-icon { width: 44px; height: 44px; color: rgba(255,255,255,.55); }
+.ugpg-img-icon svg { width: 100%; height: 100%; }
+
+.ugpg-card-body { padding: 18px 18px 20px; flex: 1; display: flex; flex-direction: column; }
+.ugpg-badge {
+  display: inline-block; align-self: flex-start;
+  background: rgba(26,111,168,.1); color: var(--blue);
+  font-size: 11px; font-weight: 700; letter-spacing: .3px;
+  padding: 3px 10px; border-radius: 5px; margin-bottom: 10px;
+}
+.ugpg-card-body h3 {
+  font-family: 'Poppins', sans-serif; font-size: 17px; font-weight: 800;
+  color: var(--text-dark); margin-bottom: 10px; line-height: 1.3;
+}
+.ugpg-card-body p { font-size: 13.5px; color: var(--text-mid); line-height: 1.55; margin-bottom: 8px; }
+.ugpg-card-body p strong { color: var(--text-dark); font-weight: 700; }
+.ugpg-learn-btn {
+  margin-top: auto; align-self: flex-start;
+  background: var(--navy); color: #fff; border: none;
+  padding: 10px 22px; border-radius: 6px;
+  font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 700;
+  cursor: pointer; transition: background .2s, transform .15s;
+}
+.ugpg-learn-btn:hover { background: var(--blue); transform: translateY(-1px); }
+
+.ugpg-back-head {
+  padding: 16px 18px 12px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%); color: #fff;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.ugpg-back-head h4 { font-family: 'Poppins', sans-serif; font-size: 14.5px; font-weight: 800; line-height: 1.3; }
+.ugpg-back-close { background: none; border: none; color: rgba(255,255,255,.85); font-size: 20px; line-height: 1; cursor: pointer; flex-shrink: 0; }
+.ugpg-back-close:hover { color: #fff; }
+
+.ugpg-back-scroll {
+  flex: 1; overflow-y: auto; padding: 14px 18px;
+}
+.ugpg-back-scroll::-webkit-scrollbar { width: 5px; }
+.ugpg-back-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+.ugpg-back-section { margin-bottom: 14px; }
+.ugpg-back-section strong {
+  display: block; font-size: 11px; font-weight: 800; color: var(--navy);
+  text-transform: uppercase; letter-spacing: .4px; margin-bottom: 5px;
+}
+.ugpg-back-section p { font-size: 12.3px; color: var(--text-mid); line-height: 1.6; }
+
+.ugpg-back-fee {
+  background: var(--light-bg); border-radius: 8px; padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 6px; margin-top: 4px;
+}
+.ugpg-back-fee div { display: flex; justify-content: space-between; gap: 10px; font-size: 11.5px; color: var(--text-mid); }
+.ugpg-back-fee strong { color: var(--navy); font-weight: 800; text-align: right; }
+
+.ugpg-back-btn {
+  flex-shrink: 0; margin: 0 18px 16px; width: calc(100% - 36px);
+  background: transparent; color: var(--navy); border: 1.5px solid var(--border);
+  padding: 9px; border-radius: 7px; font-size: 12.5px; font-weight: 700;
+  cursor: pointer; font-family: 'Inter', sans-serif; transition: all .2s;
+}
+.ugpg-back-btn:hover { background: var(--light-bg); border-color: var(--blue); color: var(--blue); }
+
+@media (max-width: 900px) {
+  .ugpg-card { flex: 0 0 calc(50% - 11px); }
+}
+@media (max-width: 620px) {
+  .ugpg-card { flex: 0 0 85%; }
+  .ugpg-tabs { gap: 26px; }
+  .ugpg-card-inner { min-height: 480px; }
+}
+
 .programs-section .section-label,
 .programs-section .section-title,
 .programs-section .section-sub {
   all: unset;
 }
-
-/* ═══════════════════════════════════════════════════════════════
-   PROGRAMS SECTION — SCOPED CSS (no global class collisions)
-   All classes prefixed with .programs-section to avoid leakage
-═══════════════════════════════════════════════════════════════ */
 
 :root {
   --ps-navy: #02446c;
@@ -691,7 +887,6 @@
   --ps-text-mid: #4a5568;
 }
 
-/* ── WRAPPER ── */
 .programs-section {
   min-height: unset;
   height: auto;
@@ -728,18 +923,15 @@
   50% { transform: translate(24px,18px) scale(1.12); }
 }
 
-/* ── HEADER ── */
 .programs-section__header {
   text-align: center;
   max-width: 640px;
   margin: 0 auto 32px;
   position: relative;
   z-index: 1;
-  /* Reset any inherited spacing from global .section styles */
   padding: 0;
 }
 
-/* Scoped eyebrow — avoids collision with global .section-label */
 .programs-section__eyebrow {
   display: inline-block;
   background: rgba(26,111,212,0.1);
@@ -753,26 +945,24 @@
   margin-bottom: 14px;
 }
 
-/* Scoped heading — avoids collision with global .section-title */
 .programs-section__heading {
   font-family: 'Poppins', sans-serif;
   font-size: 34px;
   font-weight: 800;
   color: #02446c;
   line-height: 1.2;
-  margin: 0 0 12px 0;  /* explicit 0 top margin */
+  margin: 0 0 12px 0;
   padding: 0;
 }
 .programs-section__heading span { color: #1a6fa8; }
 
-/* Scoped sub — avoids collision with global .section-sub */
 .programs-section__sub {
   font-size: 14.5px;
   color: #5a6a7a;
   line-height: 1.7;
   margin: 0 0 14px 0;
   padding: 0;
-  max-width: 100%;  /* override any global max-width */
+  max-width: 100%;
 }
 
 .programs-section__divider {
@@ -783,7 +973,6 @@
   margin: 0 auto;
 }
 
-/* ── CARDS GRID ── */
 .programs-grid {
   display: flex;
   flex-direction: row;
@@ -795,14 +984,12 @@
   z-index: 1;
 }
 
-/* ── CARD SHELL ── */
 .prog-card {
   flex: 1 1 0;
   min-width: 0;
   border-radius: 16px;
   perspective: 1800px;
   cursor: pointer;
-  /* KEY FIX: don't set a fixed height — let content define it */
   height: auto;
   min-height: unset;
   position: relative;
@@ -815,11 +1002,9 @@
 .programs-section.in-view .prog-card:nth-child(2) { transition-delay: .15s; }
 .programs-section.in-view .prog-card:nth-child(3) { transition-delay: .25s; }
 
-/* Inner flipping container — needs explicit height */
 .prog-card-inner {
   position: relative;
   width: 100%;
-  /* height driven by the tallest face */
   height: 100%;
   min-height: 480px;
   transition: transform 0.75s cubic-bezier(0.34, 1.2, 0.64, 1);
@@ -842,7 +1027,6 @@
   background: #fff;
   box-shadow: 0 4px 20px rgba(4,51,89,.07);
   transition: box-shadow .3s, transform .15s;
-  /* Let content fill naturally */
   display: flex;
   flex-direction: column;
 }
@@ -855,7 +1039,6 @@
 .prog-card-front { transform: rotateY(0deg); }
 .prog-card-back  { transform: rotateY(180deg); }
 
-/* ── FRONT: TOP BANNER ── */
 .prog-card-top {
   padding: 20px 20px 16px;
   color: #fff;
@@ -894,7 +1077,6 @@
   margin-top: 3px;
 }
 
-/* ── FRONT: BODY ── */
 .prog-card-body {
   padding: 16px 20px;
   flex: 1;
@@ -955,7 +1137,6 @@
   padding: 3px 8px;
 }
 
-/* Buttons pushed to bottom of card */
 .prog-btns {
   display: flex;
   gap: 8px;
@@ -998,7 +1179,6 @@
 }
 .btn-brochure:hover { background: var(--ps-blue); color: #fff; }
 
-/* ── BACK: TOP BANNER ── */
 .prog-card-back-top {
   padding: 18px 20px 14px;
   color: #fff;
@@ -1022,7 +1202,6 @@
   margin-bottom: 0;
 }
 
-/* ── BACK: CONTENT ── */
 .prog-card-back-content {
   padding: 14px 20px 16px;
   display: flex;
@@ -1079,7 +1258,6 @@
 }
 .btn-back:hover { background: var(--ps-light-bg); border-color: var(--ps-blue); color: var(--ps-blue); }
 
-/* ── BOTTOM CTA STRIP ── */
 .section-cta-strip {
   margin-top: 28px;
   display: flex;
@@ -1147,7 +1325,6 @@
 }
 .btn-cta-outline:hover { background: #1a6fa8; color: #fff; }
 
-/* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .programs-section { padding: 40px 20px 44px; min-height: unset; }
   .programs-section__heading { font-size: 26px; }
@@ -1252,7 +1429,6 @@
 .faq-item.open .faq-q { color: var(--blue); background: var(--light-bg); }
 .faq-q .q-text { flex: 1; transition: color .3s ease; }
 
-/* 3D flip icon: a little cube-like toggle */
 .faq-q .arrow {
   flex-shrink: 0;
   width: 30px; height: 30px;
@@ -1276,7 +1452,6 @@
 .faq-item.open .arrow .arrow-face.front { transform: rotateY(180deg); }
 .faq-item.open .arrow .arrow-face.back { transform: rotateY(360deg); }
 
-/* 3D unfolding answer panel */
 .faq-a-wrap {
   max-height: 0;
   overflow: hidden;
@@ -1314,7 +1489,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   /* ── FOOTER ── */
-  footer { background: var(--navy); color: rgba(255,255,255,.75); padding: 52px 20px 24px; position: relative; overflow: hidden; }
+  footer { background: #000000; color: rgba(255,255,255,.75); padding: 52px 20px 24px; position: relative; overflow: hidden; }
   .footer-orb {
     position: absolute; border-radius: 50%; pointer-events: none; filter: blur(2px);
   }
@@ -1529,8 +1704,13 @@
     .features-grid { grid-template-columns: 1fr; }
     .steps-grid { grid-template-columns: repeat(2,1fr); }
     .footer-top { grid-template-columns: 1fr; }
-    .nav-links { display: none; }
     .hero-stats { gap: 16px; }
+  }
+  @media (max-width: 860px) {
+    .nav-links { display: none; }
+    .nav-cta { display: none; }
+    .nav-toggle { display: flex; }
+    .nav-mobile-panel { display: block; }
   }
   .path-wrap{
   position:relative;
@@ -1658,111 +1838,177 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   ADMISSION PROCESS — scroll-driven animated timeline
-   (inlined directly on the page, no fetch/runtime reconstruction)
+   ADMISSION PROCESS — horizontal scroll-driven timeline
 ═══════════════════════════════════════════════════════════ */
-.adm3-section, .adm3-section *, .adm3-section *::before, .adm3-section *::after { box-sizing: border-box; }
+.admh-section, .admh-section *, .admh-section *::before, .admh-section *::after { box-sizing: border-box; }
 
-.adm3-section {
-  padding: 80px 20px 90px;
+.admh-section {
+  padding: 70px 20px 60px;
   background: #ffffff;
   position: relative;
   overflow: hidden;
 }
-.adm3-section::before {
+.admh-section::before {
   content: '';
   position: absolute; top: -100px; left: -120px;
   width: 360px; height: 360px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(26,111,212,.08) 0%, transparent 70%);
-  animation: adm3Drift 17s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(2,68,108,.06) 0%, transparent 70%);
+  animation: admhDrift 17s ease-in-out infinite;
   pointer-events: none;
 }
-.adm3-section::after {
+.admh-section::after {
   content: '';
   position: absolute; bottom: -120px; right: -100px;
   width: 320px; height: 320px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(237,50,55,.06) 0%, transparent 70%);
-  animation: adm3Drift 21s ease-in-out infinite reverse;
+  background: radial-gradient(circle, rgba(224,147,46,.07) 0%, transparent 70%);
+  animation: admhDrift 21s ease-in-out infinite reverse;
   pointer-events: none;
 }
-@keyframes adm3Drift { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(22px,16px) scale(1.1); } }
+@keyframes admhDrift { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(22px,16px) scale(1.1); } }
 
-.adm3-head { text-align: center; max-width: 620px; margin: 0 auto 56px; position: relative; z-index: 1; }
-.adm3-label {
+.admh-head { text-align: center; max-width: 620px; margin: 0 auto 40px; position: relative; z-index: 1; }
+.admh-label {
   display: inline-block; background: rgba(76,121,220,.1); color: #1a6fa8;
   font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
   padding: 4px 12px; border-radius: 20px; margin-bottom: 10px; font-family: 'Inter', sans-serif;
 }
-.adm3-title {
+.admh-title {
   font-family: 'Poppins', sans-serif; font-size: clamp(22px,3vw,34px); font-weight: 800;
   color: #02446c; line-height: 1.25; margin-bottom: 8px;
 }
-.adm3-sub { font-size: 15px; color: #777; line-height: 1.7; font-family: 'Inter', sans-serif; }
+.admh-sub { font-size: 15px; color: #777; line-height: 1.7; font-family: 'Inter', sans-serif; }
 
-.adm3-timeline { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; padding-left: 56px; }
-.adm3-spine { position: absolute; top: 6px; bottom: 6px; left: 19px; width: 4px; background: #e6ecf7; border-radius: 4px; }
-.adm3-spine-fill {
-  position: absolute; top: 0; left: 0; width: 100%; height: 0%;
-  background: linear-gradient(180deg, #e63946, #1a6fa8, #0e8fa8, #2a9d8f, #e9c46a, #f4a261, #6a4c93);
-  border-radius: 4px;
-  transition: height .15s linear;
+.admh-scroll-hint {
+  text-align: center; font-size: 12px; color: #9aa6bd; margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.admh-scroll-hint svg { width: 14px; height: 14px; animation: admhArrowNudge 1.6s ease-in-out infinite; }
+@keyframes admhArrowNudge { 0%,100% { transform: translateX(0); } 50% { transform: translateX(4px); } }
+
+.admh-scroller-wrap {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.admh-scroller-wrap::before,
+.admh-scroller-wrap::after {
+  content: '';
+  position: absolute; top: 0; bottom: 0; width: 56px; z-index: 2; pointer-events: none;
+}
+.admh-scroller-wrap::before { left: 0; background: linear-gradient(90deg, #fff 0%, rgba(255,255,255,0) 100%); }
+.admh-scroller-wrap::after  { right: 0; background: linear-gradient(270deg, #fff 0%, rgba(255,255,255,0) 100%); }
+
+.admh-scroller {
+  position: relative;
+  margin: 0 auto;
+  z-index: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  padding: 34px 24px 20px;
+  scrollbar-width: thin;
+  scrollbar-color: #1a6fa8 #e6ecf7;
+}
+.admh-scroller::-webkit-scrollbar { height: 7px; }
+.admh-scroller::-webkit-scrollbar-track { background: #e6ecf7; border-radius: 10px; }
+.admh-scroller::-webkit-scrollbar-thumb { background: #1a6fa8; border-radius: 10px; }
+
+.admh-track {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 20px;
+  width: max-content;
 }
 
-.adm3-row { position: relative; padding-bottom: 50px; opacity: 0; transform: translateX(-22px); transition: opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1); }
-.adm3-row:last-child { padding-bottom: 0; }
-.adm3-row.in-view { opacity: 1; transform: translateX(0); }
+.admh-spine {
+  position: absolute; left: 20px; right: 20px; top: 55px; height: 4px;
+  background: #e6ecf7; border-radius: 4px; z-index: 0;
+}
+.admh-spine-fill {
+  position: absolute; top: 0; left: 0; height: 100%; width: 0%;
+  background: linear-gradient(90deg, #02446c, #1a6fa8, #0e8fa8, #1a8a72, #e0932e, #f4a261, #6a4c93);
+  border-radius: 4px;
+  transition: width .15s linear;
+}
 
-.adm3-dot {
-  position: absolute; left: -56px; top: 0;
+.admh-item {
+  position: relative;
+  z-index: 1;
+  width: 250px;
+  flex: 0 0 250px;
+  scroll-snap-align: start;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .5s cubic-bezier(.4,0,.2,1), transform .5s cubic-bezier(.4,0,.2,1);
+}
+.admh-item.in-view { opacity: 1; transform: translateY(0); }
+
+.admh-dot {
   width: 40px; height: 40px; border-radius: 50%;
   background: #fff; border: 3px solid #d8e1f3; color: #9aa6bd;
   display: flex; align-items: center; justify-content: center;
   font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 14px;
+  margin: 0 auto 16px;
   transition: border-color .4s, color .4s, background .4s, box-shadow .4s, transform .4s cubic-bezier(.34,1.6,.64,1);
-  z-index: 2;
 }
-.adm3-row.in-view .adm3-dot {
-  border-color: var(--c, #1a6fa8); color: #fff; background: var(--c, #1a6fa8);
-  box-shadow: 0 6px 18px rgba(4,51,89,.18); transform: scale(1.08);
-  animation: adm3DotSettle .5s ease-out;
+.admh-item.in-view .admh-dot {
+  border-color: var(--c, #1a6fa8);
+  color: #fff;
+  background: var(--c, #1a6fa8);
+  box-shadow: 0 6px 18px rgba(4,51,89,.18);
+  transform: scale(1.08);
+  animation: admhDotSettle .5s ease-out;
 }
-@keyframes adm3DotSettle { 0% { transform: scale(.4) rotate(-25deg); } 60% { transform: scale(1.18) rotate(4deg); } 100% { transform: scale(1.08) rotate(0); } }
+@keyframes admhDotSettle { 0% { transform: scale(.4) rotate(-25deg); } 60% { transform: scale(1.18) rotate(4deg); } 100% { transform: scale(1.08) rotate(0); } }
 
-.adm3-card { background: #fff; border: 1.5px solid #e6ecf7; border-radius: 14px; padding: 20px 22px; box-shadow: 0 4px 20px rgba(4,51,89,.06); transition: box-shadow .35s, transform .35s, border-color .35s; }
-.adm3-row.in-view .adm3-card { border-color: var(--c, #1a6fa8); box-shadow: 0 14px 34px rgba(4,51,89,.12); }
-.adm3-card:hover { transform: translateY(-3px); }
+.admh-card {
+  background: #fff; border: 1.5px solid #e6ecf7; border-radius: 14px;
+  padding: 18px 16px; box-shadow: 0 4px 20px rgba(4,51,89,.06);
+  height: 100%;
+  transition: box-shadow .35s, transform .35s, border-color .35s;
+}
+.admh-item.in-view .admh-card { border-color: var(--c, #1a6fa8); box-shadow: 0 14px 34px rgba(4,51,89,.12); }
+.admh-card:hover { transform: translateY(-3px); }
 
-.adm3-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-.adm3-card-icon {
-  width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+.admh-card-top { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; margin-bottom: 8px; }
+.admh-card-icon {
+  width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center; color: #fff;
   background: var(--c, #1a6fa8);
   transform: scale(.5); opacity: 0;
   transition: transform .45s cubic-bezier(.34,1.6,.64,1) .15s, opacity .4s ease .15s;
 }
-.adm3-row.in-view .adm3-card-icon { transform: scale(1); opacity: 1; }
-.adm3-card-icon svg { width: 20px; height: 20px; }
-.adm3-card-eyebrow { font-size: 10.5px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: #9aa6bd; }
-.adm3-card-title { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 16.5px; color: #02446c; }
-.adm3-card-desc { font-size: 13.8px; color: #56657d; line-height: 1.65; }
+.admh-item.in-view .admh-card-icon { transform: scale(1); opacity: 1; }
+.admh-card-icon svg { width: 18px; height: 18px; }
+.admh-card-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: #9aa6bd; }
+.admh-card-title { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 14.5px; color: #02446c; line-height: 1.25; }
+.admh-card-desc { font-size: 12.5px; color: #56657d; line-height: 1.6; text-align: center; }
 
-.adm3-end { margin-top: 8px; margin-left: -56px; padding-left: 56px; display: flex; align-items: center; gap: 14px; opacity: 0; transform: translateY(10px); transition: opacity .5s ease, transform .5s ease; }
-.adm3-end.in-view { opacity: 1; transform: translateY(0); }
-.adm3-end-dot {
-  width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; margin-left: -56px;
+.admh-end {
+  width: 190px; flex: 0 0 190px;
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .5s ease, transform .5s ease;
+  z-index: 1;
+}
+.admh-end.in-view { opacity: 1; transform: translateY(0); }
+.admh-end-dot {
+  width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
   background: linear-gradient(135deg, #1a9e5b, #16895a);
   display: flex; align-items: center; justify-content: center; color: #fff;
   box-shadow: 0 8px 20px rgba(26,158,91,.3);
+  margin-bottom: 6px;
 }
-.adm3-end-dot svg { width: 18px; height: 18px; }
-.adm3-end-text strong { display: block; color: #02446c; font-family: 'Poppins', sans-serif; font-size: 14.5px; }
-.adm3-end-text span { font-size: 12.5px; color: #8a93a6; }
+.admh-end-dot svg { width: 18px; height: 18px; }
+.admh-end-text strong { display: block; color: #02446c; font-family: 'Poppins', sans-serif; font-size: 14px; }
+.admh-end-text span { font-size: 12px; color: #8a93a6; }
 
-@media (max-width: 600px) {
-  .adm3-timeline { padding-left: 44px; }
-  .adm3-spine { left: 15px; }
-  .adm3-dot { left: -44px; width: 34px; height: 34px; font-size: 12.5px; }
-  .adm3-end-dot { margin-left: -44px; width: 34px; height: 34px; }
+@media (max-width: 700px) {
+  .admh-item { width: 200px; flex-basis: 200px; }
+  .admh-end { width: 170px; flex-basis: 170px; }
+  .admh-card { padding: 14px 12px; }
 }
 .degree-proof-grid {
   display: grid;
@@ -1886,6 +2132,43 @@
   .industry-curriculum-grid { grid-template-columns: 1fr; gap: 32px; }
   .industry-curriculum-image { position: static; }
 }
+.rankings-head { margin-bottom: 36px; }
+.rankings-stars {
+  color: #e0932e;
+  font-size: 22px;
+  letter-spacing: 4px;
+  margin-top: 4px;
+}
+.rankings-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  max-width: 1160px;
+  margin: 0 auto;
+}
+.rankings-card { text-align: center; }
+.rankings-img-wrap {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 34px rgba(4,51,89,.12);
+}
+.rankings-img-wrap img {
+  width: 100%;
+  display: block;
+}
+.rankings-caption {
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--text-mid);
+  line-height: 1.65;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 760px) {
+  .rankings-grid { grid-template-columns: 1fr; gap: 24px; }
+}
 </style>
 </head>
 <body>
@@ -1905,7 +2188,6 @@
 </div>
 
 <!-- NAVBAR -->
-<!-- NAVBAR -->
 <nav>
   <div class="nav-inner">
     <div style="display:flex; align-items:center; gap:14px;">
@@ -1914,20 +2196,37 @@
           <img id="navLogoImg" src="assets/img/logo_2020.png" alt="DBU Online Logo" style="height: 48px; width: auto;">
         </a>
       </div>
+    </div>
 
-     
+    <div class="nav-right-group">
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#about-intro">About Us</a></li>
+        <li><a href="#programs">Programs</a></li>
+        <li><a href="#programs">Fees</a></li>
+        <li><a href="#faq">FAQs</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a href="#" target="_blank" class="nav-cta">Apply Now →</a>
+    </div>
 
-    <ul class="nav-links">
-      <li><a href="#">Home</a></li>
-      <li><a href="#about-intro">About Us</a></li>
-      <li><a href="#programs">Programs</a></li>
-      <li><a href="#programs">Fees</a></li>
-      <li><a href="#faq">FAQs</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <a href="#" target="_blank" class="nav-cta">Apply Now →</a>
+    <button type="button" class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<div class="nav-mobile-panel" id="navMobilePanel">
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="#about-intro">About Us</a></li>
+    <li><a href="#programs">Programs</a></li>
+    <li><a href="#programs">Fees</a></li>
+    <li><a href="#faq">FAQs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#" target="_blank" class="nav-cta">Apply Now →</a>
+</div>
 <!-- HERO -->
 <section class="hero" id="heroSection">
 
@@ -1970,285 +2269,339 @@
   </div>
 </section>
 
-<!-- ACCREDITATION -->
-<section class="section accred-section" id="accreditations">
+<!-- RANKINGS -->
+<section class="section rankings-section" style="background:var(--light-bg);">
   <div class="section-inner">
-    <div class="text-center">
-      <span class="section-label">Quality Assurance</span>
-      <h2 class="section-title">Accreditations & Approvals</h2>
-      <p class="section-sub">Degrees recognised by India's top regulatory and academic bodies.</p>
+
+    <div class="text-center rankings-head">
+      <h2 class="section-title" style="margin-bottom:6px;">Rankings</h2>
+      <div class="rankings-stars">★★★★★</div>
     </div>
 
-    <div class="accred-carousel">
-      <div class="accred-track">
-        <div class="accred-card"><img src="assets/logo/1.png" alt="UGC"><span>University Grants Commission</span></div>
-        <div class="accred-card"><img src="assets/logo/naac.jpg" alt="NAAC"><span>NAAC Accredited</span></div>
-        <div class="accred-card"><div class="accred-textmark">DEB</div><span>UGC-DEB Entitled for Online Programs</span></div>
-        <div class="accred-card"><div class="accred-textmark">AIU</div><span>Association of Indian Universities</span></div>
-        <div class="accred-card"><div class="accred-textmark">2(f)</div><span>UGC Section 2(f) Recognised</span></div>
-        <div class="accred-card"><div class="accred-textmark">GOI</div><span>State Private University Act, Punjab</span></div>
+    <div class="rankings-grid">
 
-        <!-- duplicate set for seamless loop -->
-        <div class="accred-card"><img src="assets/logo/1.png" alt="UGC"><span>University Grants Commission</span></div>
-        <div class="accred-card"><img src="assets/logo/naac.jpg" alt="NAAC"><span>NAAC Accredited</span></div>
-        <div class="accred-card"><div class="accred-textmark">DEB</div><span>UGC-DEB Entitled for Online Programs</span></div>
-        <div class="accred-card"><div class="accred-textmark">AIU</div><span>Association of Indian Universities</span></div>
-        <div class="accred-card"><div class="accred-textmark">2(f)</div><span>UGC Section 2(f) Recognised</span></div>
-        <div class="accred-card"><div class="accred-textmark">GOI</div><span>State Private University Act, Punjab</span></div>
+      <div class="rankings-card">
+        <div class="rankings-img-wrap">
+          <img id="ranking1Img" src="assets/img/ranking.png" alt="NAAC A+ Accreditation">
+        </div>
+        <p class="rankings-caption">
+          Desh Bhagat University (DBU) has achieved an outstanding A+ grade accreditation from the National Assessment and Accreditation Council (NAAC)
+        </p>
       </div>
+
+      <div class="rankings-card">
+        <div class="rankings-img-wrap">
+          <img id="ranking2Img" src="assets/img/ranking2.png" alt="Global University Rankings #970">
+        </div>
+        <p class="rankings-caption">
+          Desh Bhagat University (DBU) shines on The Global stage, Ranking #970 in the DEI & SI Rankings 2025
+        </p>
+      </div>
+
     </div>
   </div>
 </section>
 
 <!-- TRUST STRIP -->
  
-<section class="programs-section" id="programs">
+<section class="section ugpg-section" id="programs">
+  <div class="section-inner">
+    <div class="text-center" style="margin-bottom:8px;">
+      <span class="section-label">Our Programs</span>
+      <h2 class="section-title">Explore Our UG &amp; PG Programs</h2>
+      <p class="section-sub" style="margin:0 auto;">UGC-entitled online degrees from Desh Bhagat University — fully accredited, industry-aligned, and designed for working professionals and fresh graduates alike.</p>
+    </div>
 
-  <!-- SECTION HEADER — uses scoped class names to avoid CSS collision -->
-  <div class="programs-section__header">
-    <div class="programs-section__eyebrow">Our Programs</div>
-    <h2 class="programs-section__heading">
-      Learn at Your Own Pace,<br><span>From Anywhere in India</span>
-    </h2>
-    <p class="programs-section__sub">
-      UGC-entitled online degrees from Desh Bhagat University — fully accredited,
-      industry-aligned, and designed for working professionals and fresh graduates alike.
-    </p>
-    <div class="programs-section__divider"></div>
-  </div>
+    <div class="ugpg-tabs">
+      <button type="button" class="ugpg-tab active" data-target="ug">UG Programs</button>
+      <button type="button" class="ugpg-tab" data-target="pg">PG Programs</button>
+    </div>
 
-  <!-- CARDS GRID -->
-  <div class="programs-grid">
+    <!-- UG PANEL -->
+    <div class="ugpg-panel active" data-panel="ug">
+      <div class="ugpg-carousel-wrap">
+        <button type="button" class="ugpg-arrow ugpg-prev" aria-label="Previous programs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
 
-    <!-- CARD 1: BBA -->
-    <div class="prog-card" id="card-bba">
-      <div class="prog-card-inner">
-        <div class="prog-card-front">
-          <div class="prog-card-top">
-            <div class="prog-badge">Undergraduate · 3 Years</div>
-            <h3>Bachelor of Business Administration</h3>
-            <div class="abbr">Online BBA</div>
+        <div class="ugpg-track" id="ugTrack">
+
+          <!-- BBA -->
+          <div class="ugpg-card" id="ugpg-card-bba">
+            <div class="ugpg-card-inner">
+              <div class="ugpg-card-front">
+                <div class="ugpg-card-img">
+                  <span class="ugpg-img-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L2 8l10 5 10-5-10-5z"/><path d="M6 10.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-5.5"/></svg>
+                  </span>
+                  <img class="ugpg-photo" data-basename="bba" alt="Bachelor of Business Administration" loading="lazy">
+                </div>
+                <div class="ugpg-card-body">
+                  <span class="ugpg-badge">BBA</span>
+                  <h3>Bachelor of Business Administration</h3>
+                  <p><strong>Duration:</strong> 3 Years / 6 Semesters</p>
+                  <p><strong>Eligibility:</strong> 10+2 pass or its equivalent in any stream from a recognized Board</p>
+                  <button type="button" class="ugpg-learn-btn" onclick="document.getElementById('ugpg-card-bba').classList.add('flipped')">Learn More</button>
+                </div>
+              </div>
+              <div class="ugpg-card-back">
+                <div class="ugpg-back-head">
+                  <h4>Bachelor of Business Administration</h4>
+                  <button type="button" class="ugpg-back-close" onclick="document.getElementById('ugpg-card-bba').classList.remove('flipped')" aria-label="Close">&times;</button>
+                </div>
+                <div class="ugpg-back-scroll">
+                  <div class="ugpg-back-section">
+                    <strong>Key Features of the Program</strong>
+                    <p>BBA is such a course, which provides the graduates with those skills that translate across different fields. It will give the scope to understand the National and International Markets of various different industries like Banking, Logistics, Finance, Accounting including Human Resources. This course is a learning guide to the student in which a concrete foundation is laid to understand all aspects of Business, including management, economics, communication, accounting and last but not the least the Marketing part too. Curriculum at DBU is designed in such a way that it will help the learner to understand the business competencies and acquire professional abilities, pick the knowledge of Business principles and leadership. They will be well aware of analyzing financial statements and making strategies to develop business in both National and International Markets, by making use of data analytics and business technology.</p>
+                  </div>
+                  <div class="ugpg-back-section">
+                    <strong>Outcome of the Program</strong>
+                    <p>Student will have a myriad of encouraging and enterprising opportunities soon after their course is completed. BBA will enhance the skills and knowledge required to plunge into the dynamic world of Business. Your goals can be achieved by placing yourself in any of the fields of your interest, such as Marketing, Financial consultant, a hardcore HR manager or even better to be a visionary Entrepreneur. You can excel in your career in a short span of time, provided you focus on your goals and make best use of the learning.</p>
+                  </div>
+                  <div class="ugpg-back-section">
+                    <strong>Job Opportunities</strong>
+                    <p>Business Entrepreneur, Marketing Executive, Financial Analyst, Sales and Operations In-charge, Business Development Manager, Retail Manager, Event planner, HR executive and many more.</p>
+                  </div>
+                  <div class="ugpg-back-fee">
+                    <div><span>Program Fee</span><strong>INR 1,14,000</strong></div>
+                    <div><span>Semester Payment</span><strong>INR 1,14,000 / 6 = INR 19,000/-</strong></div>
+                    <div><span>Examination Fee</span><strong>INR 1,500/- (Per Semester)</strong></div>
+                  </div>
+                </div>
+                <button type="button" class="ugpg-back-btn" onclick="document.getElementById('ugpg-card-bba').classList.remove('flipped')">← Back to Overview</button>
+              </div>
+            </div>
           </div>
-          <div class="prog-card-body">
-            <div class="prog-meta">
-              <div class="meta-item"><label>Duration</label><span>3 Years</span></div>
-              <div class="meta-item"><label>Mode</label><span>100% Online</span></div>
-              <div class="meta-item"><label>Eligibility</label><span>10+2 / HSC</span></div>
-              <div class="meta-item"><label>Max Duration</label><span>6 Years</span></div>
-            </div>
-         
-<div class="prog-fee">
-  <div class="fee-label">Annual Fee</div>
 
-  <div class="fee-val">
-    ₹18,000 + ₹6,000 <span>/ year</span>
-  </div>
-
-  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:7px;font-size:12px;color:#435269;">
-    <span style="background:#ffffff;padding:4px 8px;border:1px solid #dce5ef;border-radius:6px;font-weight:600;">
-      ₹18,000 Tuition Fee
-    </span>
-
-    <span style="color:#8a97a8;font-weight:700;">+</span>
-
-    <span style="background:#ffffff;padding:4px 8px;border:1px solid #dce5ef;border-radius:6px;font-weight:600;">
-      ₹6,000 Examination/Enrollment Fee
-    </span>
-  </div>
-</div>
-
-
-            <div class="prog-tags">
-              <span class="prog-tag">Finance</span>
-              <span class="prog-tag">Marketing</span>
-              <span class="prog-tag">Int'l Business</span>
-              <span class="prog-tag">HR</span>
-            </div>
-            <div class="prog-btns">
-              <button class="btn-enq" onclick="event.stopPropagation(); document.getElementById('card-bba').classList.add('flipped')">View More Details</button>
-              <a href="assets/broucher/BBA.pdf" target="_blank" class="btn-brochure" onclick="event.stopPropagation()">Brochure</a>
+          <!-- B.Com -->
+          <div class="ugpg-card" id="ugpg-card-bcom">
+            <div class="ugpg-card-inner">
+              <div class="ugpg-card-front">
+                <div class="ugpg-card-img">
+                  <span class="ugpg-img-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/><circle cx="7" cy="14.5" r="1.4" fill="currentColor" stroke="none"/></svg>
+                  </span>
+                  <img class="ugpg-photo" data-basename="b.com" alt="Bachelor of Commerce" loading="lazy">
+                </div>
+                <div class="ugpg-card-body">
+                  <span class="ugpg-badge">B.Com</span>
+                  <h3>Bachelor of Commerce</h3>
+                  <p><strong>Duration:</strong> 3 Years / 6 Semesters</p>
+                  <p><strong>Eligibility:</strong> 10+2 in any stream with 45% marks (40% for reserve categories as per Govt. norms.) from a recognized Institute/University</p>
+                  <button type="button" class="ugpg-learn-btn" onclick="document.getElementById('ugpg-card-bcom').classList.add('flipped')">Learn More</button>
+                </div>
+              </div>
+              <div class="ugpg-card-back">
+                <div class="ugpg-back-head">
+                  <h4>Bachelor of Commerce</h4>
+                  <button type="button" class="ugpg-back-close" onclick="document.getElementById('ugpg-card-bcom').classList.remove('flipped')" aria-label="Close">&times;</button>
+                </div>
+                <div class="ugpg-back-scroll">
+                  <div class="ugpg-back-section">
+                    <strong>Key Features of the Program</strong>
+                    <p>This is a Program in high demand as it opens up avenues in the most important segment of any organization, be it small or big, i.e. the Financial department. This course by and large enables the student to either move into the corporate world or be an entrepreneur. A commerce background student can understand the business operations and world market aspects logically very well as compared to others as they understand the numbers very easily. Learner will be given knowledge of Accounts, economics, and above all he will become proficient in reading the Balance sheet by the end of the course.</p>
+                  </div>
+                  <div class="ugpg-back-section">
+                    <strong>Outcome of the Program</strong>
+                    <p>Soon after they graduate, they can look for further development in the same field or can acquire practical knowledge of what is being learnt in the graduation. B.Com student will become eligible to enroll in CA / ICWA / ACS or can enter into Banking Industry or is even open to Agriculture Finance Sector. At the end of the course he stands with the tools like preparing Balance sheets, can work in stock markets or even be a Financial Advisor Assistant.</p>
+                  </div>
+                  <div class="ugpg-back-section">
+                    <strong>Job Opportunities</strong>
+                    <p>Accountant, Accountant Executive, Tax Auditor, Finance Manager, Cost Accountant or a Financial Analyst.</p>
+                  </div>
+                  <div class="ugpg-back-fee">
+                    <div><span>Program Fee</span><strong>INR 78,000</strong></div>
+                    <div><span>Semester Payment</span><strong>INR 78,000 / 6 = INR 13,000/-</strong></div>
+                    <div><span>Examination Fee</span><strong>INR 1,500/- (Per Semester)</strong></div>
+                  </div>
+                </div>
+                <button type="button" class="ugpg-back-btn" onclick="document.getElementById('ugpg-card-bcom').classList.remove('flipped')">← Back to Overview</button>
+              </div>
             </div>
           </div>
+
+          <!-- BA -->
+          <div class="ugpg-card" id="ugpg-card-ba">
+            <div class="ugpg-card-inner">
+              <div class="ugpg-card-front">
+                <div class="ugpg-card-img">
+                  <span class="ugpg-img-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5C5.5 4.5 8 4 11 4.5v15c-3-1-5.5-.5-7-.5z"/><path d="M20 5.5C18.5 4.5 16 4 13 4.5v15c3-1 5.5-.5 7-.5z"/></svg>
+                  </span>
+                  <img class="ugpg-photo" data-basename="arts" alt="Bachelor of Arts" loading="lazy">
+                </div>
+                <div class="ugpg-card-body">
+                  <span class="ugpg-badge">BA</span>
+                  <h3>Bachelor of Arts</h3>
+                  <p><strong>Duration:</strong> 3 Years / 6 Semesters</p>
+                  <p><strong>Eligibility:</strong> 10+2 with 45% marks in aggregate for general category &amp; 40% for SC/ST/OBC, from a recognized Board.</p>
+                  <button type="button" class="ugpg-learn-btn" onclick="document.getElementById('ugpg-card-ba').classList.add('flipped')">Learn More</button>
+                </div>
+              </div>
+              <div class="ugpg-card-back">
+                <div class="ugpg-back-head">
+                  <h4>Bachelor of Arts</h4>
+                  <button type="button" class="ugpg-back-close" onclick="document.getElementById('ugpg-card-ba').classList.remove('flipped')" aria-label="Close">&times;</button>
+                </div>
+                <div class="ugpg-back-scroll">
+                  <div class="ugpg-back-section">
+                    <strong>Key Features of the Program</strong>
+                    <p>It is a Bachelor program that falls under the umbrella of both Arts and Humanities. BA is such a course which provides the learner with a broad and all round education and knowledge in subjects like Political Science, History, Psychology, Sociology, English literature, Philosophy, languages and Social Sciences. The main feature of this course is that it helps to enhance the critical thinking, creativity and a deeper understanding of human experiences. While BA programs are more versatile and cover a wider spectrum of subjects.</p>
+                  </div>
+                  <div class="ugpg-back-section">
+                    <strong>Outcome of the Program</strong>
+                    <p>Pursuing a BA degree will entitle the student to develop transferable skills, like creative and critical thinking, communication skills, problem solving, adaptability etc. As per the subject you have chosen, you will cultivate skills accordingly and are applied to a wide array of professions.</p>
+                  </div>
+                  <div class="ugpg-back-section">
+                    <strong>Job Opportunities</strong>
+                    <p>BA gives the learner the scope to join any field of his interest as career opportunities are not limited to one single field. One can go into Journalism, Business and Management, Teaching, HR, Marketing and Sales, Public Policy and Administration etc.</p>
+                  </div>
+                  <div class="ugpg-back-fee">
+                    <div><span>Program Fee</span><strong>INR 66,000</strong></div>
+                    <div><span>Semester Payment</span><strong>INR 66,000 / 6 = INR 11,000/-</strong></div>
+                    <div><span>Examination Fee</span><strong>INR 1,500/- (Per Semester)</strong></div>
+                  </div>
+                </div>
+                <button type="button" class="ugpg-back-btn" onclick="document.getElementById('ugpg-card-ba').classList.remove('flipped')">← Back to Overview</button>
+              </div>
+            </div>
+          </div>
+
         </div>
-        <div class="prog-card-back">
-          <div class="prog-card-back-top">
-            <h3>BBA — Program Details</h3>
-            <p>Bachelor of Business Administration</p>
-          </div>
-          <div class="prog-card-back-content">
-            <ul class="prog-detail-list">
-              <li><strong>Eligibility</strong>Passed HSC or 10+2 from any recognized board</li>
-              <li><strong>Learning Mode</strong>Pre-recorded video lectures + live sessions + LMS access</li>
-              <li><strong>E-Content</strong>eBooks, case studies, presentation slides — self-paced</li>
-              <li><strong>Assessment</strong>Assignments, quizzes, MCQs, model papers online</li>
-              <li><strong>Discussion</strong>Peer forums, faculty mentorship, live Q&A sessions</li>
-              <li><strong>Career Paths</strong>Business analyst, marketing executive, HR associate</li>
-            </ul>
-            <button class="btn-back" onclick="event.stopPropagation(); document.getElementById('card-bba').classList.remove('flipped')">← Back to Overview</button>
-          </div>
-        </div>
+
+        <button type="button" class="ugpg-arrow ugpg-next" aria-label="Next programs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
       </div>
     </div>
 
-    <!-- CARD 2: MBA -->
-    <div class="prog-card" id="card-mba">
-      <div class="prog-card-inner">
-        <div class="prog-card-front">
-          <div class="prog-card-top red-grad">
-            <div class="prog-badge">Postgraduate · 2 Years</div>
-            <h3>Master of Business Administration</h3>
-            <div class="abbr">Online MBA</div>
+    <!-- PG PANEL -->
+    <div class="ugpg-panel" data-panel="pg" style="display:none;">
+      <div class="ugpg-carousel-wrap">
+        <button type="button" class="ugpg-arrow ugpg-prev" aria-label="Previous programs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+
+        <div class="ugpg-track" id="pgTrack">
+
+          <!-- MA History -->
+          <div class="ugpg-card" id="ugpg-card-mahist">
+            <div class="ugpg-card-inner">
+              <div class="ugpg-card-front">
+                <div class="ugpg-card-img">
+                  <span class="ugpg-img-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a6 6 0 016 6c0 4-6 12-6 12S6 12 6 8a6 6 0 016-6z"/><circle cx="12" cy="8" r="2"/></svg>
+                  </span>
+                  <img class="ugpg-photo" data-basename="ma history" alt="MA History" loading="lazy">
+                </div>
+                <div class="ugpg-card-body">
+                  <span class="ugpg-badge">MA History</span>
+                  <h3>MA History</h3>
+                  <p><strong>Duration:</strong> 2 Years / 4 Semesters</p>
+                  <p><strong>Eligibility:</strong> Graduation in any stream with 45% marks in aggregate for general category &amp; 40% for SC/ST/OBC or 45% in relevant subject from a recognized University.</p>
+                  <button type="button" class="ugpg-learn-btn" onclick="document.getElementById('ugpg-card-mahist').classList.add('flipped')">Learn More</button>
+                </div>
+              </div>
+              <div class="ugpg-card-back">
+                <div class="ugpg-back-head">
+                  <h4>MA History</h4>
+                  <button type="button" class="ugpg-back-close" onclick="document.getElementById('ugpg-card-mahist').classList.remove('flipped')" aria-label="Close">&times;</button>
+                </div>
+                <div class="ugpg-back-scroll">
+                  <div class="ugpg-back-section">
+                    <strong>Key Features of the Program</strong>
+                    <p>An MA in History provides in-depth study of various historical periods, regions, and themes, offering both broad and specialized knowledge. The program emphasizes research skills, including primary source analysis and historiography, with many requiring a thesis or dissertation. Students develop critical thinking and communication skills, often through seminars and research projects. Interdisciplinary approaches, flexible learning options (such as full-time, part-time, or online), and career development opportunities, including internships and networking, are also key features. Overall, it prepares graduates for careers in education, research, public history, and beyond.</p>
+                  </div>
+                  <div class="ugpg-back-section">
+                    <strong>Outcome of the Program</strong>
+                    <p>The outcome of an MA in History is to equip students with advanced research, analytical, and critical thinking skills, enabling them to interpret and analyze historical events and sources with depth and precision. Graduates gain the ability to write and present complex historical arguments clearly and persuasively. They are prepared for careers in academia, research, public history, museums, archives, and other fields that require strong analytical and communication skills.</p>
+                  </div>
+                  <div class="ugpg-back-section">
+                    <strong>Job Opportunities</strong>
+                    <p>History teachers or university lecturers, research positions in academic institutions, think tanks, or cultural organizations, museums, archives, heritage sites, media, publishing, historical consulting, government, policy analysis, or NGOs.</p>
+                  </div>
+                  <div class="ugpg-back-fee">
+                    <div><span>Program Fee</span><strong>INR 64,000</strong></div>
+                    <div><span>Semester Payment</span><strong>INR 64,000 / 4 = INR 16,000/-</strong></div>
+                    <div><span>Examination Fee</span><strong>INR 1,000/- (Per Semester)</strong></div>
+                  </div>
+                </div>
+                <button type="button" class="ugpg-back-btn" onclick="document.getElementById('ugpg-card-mahist').classList.remove('flipped')">← Back to Overview</button>
+              </div>
+            </div>
           </div>
-          <div class="prog-card-body">
-            <div class="prog-meta">
-              <div class="meta-item"><label>Duration</label><span>2 Years</span></div>
-              <div class="meta-item"><label>Mode</label><span>100% Online</span></div>
-              <div class="meta-item"><label>Eligibility</label><span>Bachelor's Degree</span></div>
-              <div class="meta-item"><label>Min. Marks</label><span>50% Aggregate</span></div>
-            </div>
-            
-<div class="prog-fee">
-  <div class="fee-label">Annual Fee</div>
 
-  <div class="fee-val">
-    ₹32,000 + ₹7,000 <span>/ year</span>
-  </div>
-
-  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:7px;font-size:12px;color:#435269;">
-    <span style="background:#ffffff;padding:4px 8px;border:1px solid #dce5ef;border-radius:6px;font-weight:600;">
-      ₹32,000 Tuition Fee
-    </span>
-
-    <span style="color:#8a97a8;font-weight:700;">+</span>
-
-    <span style="background:#ffffff;padding:4px 8px;border:1px solid #dce5ef;border-radius:6px;font-weight:600;">
-      ₹7,000 Examination/Enrollment Fee
-    </span>
-  </div>
-</div>
-
-
-            <div class="prog-tags">
-              <span class="prog-tag">Finance</span>
-              <span class="prog-tag">Marketing</span>
-              <span class="prog-tag">Operations</span>
-              <span class="prog-tag">Strategy</span>
-            </div>
-            <div class="prog-btns">
-              <button class="btn-enq" onclick="event.stopPropagation(); document.getElementById('card-mba').classList.add('flipped')">View More Details</button>
-              <a href="assets/broucher/MBA.pdf" target="_blank" class="btn-brochure" onclick="event.stopPropagation()">Brochure</a>
+          <!-- MA Political Science -->
+          <div class="ugpg-card" id="ugpg-card-mapol">
+            <div class="ugpg-card-inner">
+              <div class="ugpg-card-front">
+                <div class="ugpg-card-img">
+                  <span class="ugpg-img-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 010 18M12 3a13 13 0 000 18"/></svg>
+                  </span>
+                  <img class="ugpg-photo" data-basename="ma political" alt="MA Political Science" loading="lazy">
+                </div>
+                <div class="ugpg-card-body">
+                  <span class="ugpg-badge">MA Political Science</span>
+                  <h3>MA Political Science</h3>
+                  <p><strong>Duration:</strong> 2 Years / 4 Semesters</p>
+                  <p><strong>Eligibility:</strong> Graduation in any stream with 45% marks in aggregate for general category &amp; 40% for SC/ST/OBC or 45% in relevant subject from a recognized University.</p>
+                  <button type="button" class="ugpg-learn-btn" onclick="document.getElementById('ugpg-card-mapol').classList.add('flipped')">Learn More</button>
+                </div>
+              </div>
+              <div class="ugpg-card-back">
+                <div class="ugpg-back-head">
+                  <h4>MA Political Science</h4>
+                  <button type="button" class="ugpg-back-close" onclick="document.getElementById('ugpg-card-mapol').classList.remove('flipped')" aria-label="Close">&times;</button>
+                </div>
+                <div class="ugpg-back-scroll">
+                  <div class="ugpg-back-section">
+                    <strong>Key Features of the Program</strong>
+                    <p>The objective of the Master of Arts in Political Science, designed for open and distance learning, is to provide students an advanced level of understanding of political systems, decision making processes and procedures, institutions and policies at all levels of government. It focuses on political ideas of Indian and western thinkers, comparative politics, international relations, political theory, social movements and state politics in India, peace and conflict in international politics etc. This M.A programme consists of 9 compulsory courses, taught over 2 years.</p>
+                  </div>
+                  <div class="ugpg-back-section">
+                    <strong>Outcome of the Program</strong>
+                    <p>The outcome of an MA in Political Science is to equip students with advanced knowledge of political systems, theory, and international relations, alongside strong analytical and research skills. Graduates gain the ability to critically evaluate political institutions, policies, and global issues, preparing them for careers in government, public policy, international organizations, non-profits, political consultancy, and research.</p>
+                  </div>
+                  <div class="ugpg-back-section">
+                    <strong>Job Opportunities</strong>
+                    <p>Policy analysts, legislative assistants, diplomats, roles with international organizations, non-profits, political consultancy firms, advocacy groups, political journalism, public relations, and research positions in think tanks or academic institutions.</p>
+                  </div>
+                  <div class="ugpg-back-fee">
+                    <div><span>Program Fee</span><strong>INR 48,000</strong></div>
+                    <div><span>Semester Payment</span><strong>INR 48,000 / 4 = INR 12,000/-</strong></div>
+                    <div><span>Examination Fee</span><strong>INR 1,500/- (Per Semester)</strong></div>
+                  </div>
+                </div>
+                <button type="button" class="ugpg-back-btn" onclick="document.getElementById('ugpg-card-mapol').classList.remove('flipped')">← Back to Overview</button>
+              </div>
             </div>
           </div>
+
         </div>
-        <div class="prog-card-back">
-          <div class="prog-card-back-top red-grad">
-            <h3>MBA — Program Details</h3>
-            <p>Master of Business Administration</p>
-          </div>
-          <div class="prog-card-back-content">
-            <ul class="prog-detail-list">
-              <li><strong>Eligibility</strong>Bachelor's from any recognized university, 50% aggregate (45% reserved)</li>
-              <li><strong>Duration</strong>2 years full program, 100% online delivery</li>
-              <li><strong>Learning Mode</strong>Pre-recorded lectures + live sessions + whiteboard explanations</li>
-              <li><strong>E-Content</strong>Digitized reading materials, summaries, glossaries, infographics</li>
-              <li><strong>Assessment</strong>Quizzes, MCQs, assignments with immediate feedback</li>
-              <li><strong>Discussion</strong>Webinars, virtual classrooms, peer-to-peer forums</li>
-              <li><strong>Career Paths</strong>Manager, business strategist, consultant, entrepreneur</li>
-            </ul>
-            <button class="btn-back" onclick="event.stopPropagation(); document.getElementById('card-mba').classList.remove('flipped')">← Back to Overview</button>
-          </div>
-        </div>
+
+        <button type="button" class="ugpg-arrow ugpg-next" aria-label="Next programs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
       </div>
     </div>
 
-    <!-- CARD 3: MCA -->
-    <div class="prog-card" id="card-mca">
-      <div class="prog-card-inner">
-        <div class="prog-card-front">
-          <div class="prog-card-top teal-grad">
-            <div class="prog-badge">Postgraduate · 2 Years</div>
-            <h3>Master of Computer Applications</h3>
-            <div class="abbr">Online MCA</div>
-          </div>
-          <div class="prog-card-body">
-            <div class="prog-meta">
-              <div class="meta-item"><label>Duration</label><span>2 Years</span></div>
-              <div class="meta-item"><label>Mode</label><span>100% Online</span></div>
-              <div class="meta-item"><label>Eligibility</label><span>Graduation</span></div>
-              <div class="meta-item"><label>Min. Marks</label><span>50% Aggregate</span></div>
-            </div>
-           
-<div class="prog-fee">
-  <div class="fee-label">Annual Fee</div>
-
-  <div class="fee-val">
-    ₹32,000 + ₹7,000 <span>/ year</span>
-  </div>
-
-  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:7px;font-size:12px;line-height:1.4;color:#435269;">
-    <span style="background:#ffffff;padding:4px 8px;border-radius:6px;border:1px solid #dce5ef;font-weight:600;">
-      ₹32,000 Tuition Fee
-    </span>
-
-    <span style="color:#8a97a8;font-weight:700;">+</span>
-
-    <span style="background:#ffffff;padding:4px 8px;border-radius:6px;border:1px solid #dce5ef;font-weight:600;">
-      ₹7,000 Examination &amp; Enrollment Fee
-    </span>
-  </div>
-</div>
-
-
-            <div class="prog-tags">
-              <span class="prog-tag">CS / IT</span>
-              <span class="prog-tag">BCA / B.Tech</span>
-              <span class="prog-tag">B.Sc-IT</span>
-              <span class="prog-tag">B.Com / BA</span>
-            </div>
-            <div class="prog-btns">
-              <button class="btn-enq" onclick="event.stopPropagation(); document.getElementById('card-mca').classList.add('flipped')">View More Details</button>
-              <a href="assets/broucher/MCA.pdf" target="_blank" class="btn-brochure" onclick="event.stopPropagation()">Brochure</a>
-            </div>
-          </div>
-        </div>
-        <div class="prog-card-back">
-          <div class="prog-card-back-top teal-grad">
-            <h3>MCA — Program Details</h3>
-            <p>Master of Computer Applications</p>
-          </div>
-          <div class="prog-card-back-content">
-            <ul class="prog-detail-list">
-              <li><strong>Eligibility</strong>Graduates in CS, Engineering, BCA, B.Sc-IT or B.Com/BA with 50% marks (45% reserved)</li>
-              <li><strong>Math Bridge</strong>Non-math graduates can qualify via university bridge course</li>
-              <li><strong>Duration</strong>2 years full program, 100% online delivery</li>
-              <li><strong>Learning Mode</strong>Video lectures, live sessions, animated slides, real-life examples</li>
-              <li><strong>E-Content</strong>Case studies, eBooks, self-paced modules, infographics</li>
-              <li><strong>Assessment</strong>Assignments, MCQs, model papers with immediate feedback</li>
-              <li><strong>Career Paths</strong>Software developer, system analyst, IT consultant, data engineer</li>
-            </ul>
-            <button class="btn-back" onclick="event.stopPropagation(); document.getElementById('card-mca').classList.remove('flipped')">← Back to Overview</button>
-          </div>
-        </div>
+    <!-- BOTTOM CTA STRIP -->
+    <div class="section-cta-strip" style="margin-top:36px;">
+      <div class="cta-strip-text">
+        <h4>Not sure which program is right for you?</h4>
+        <p>Talk to our academic counsellors — free guidance, no obligation.</p>
+      </div>
+      <div class="cta-strip-actions">
+        <a href="tel:+919876543210" class="btn-cta-primary">
+          <span class="aicon" style="width:14px;height:14px;animation:iconWiggle 1.8s ease-in-out infinite;"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.5 2.5.8 3.8.8.6 0 1 .4 1 1V21c0 .6-.4 1-1 1C10.4 22 2 13.6 2 3c0-.6.4-1 1-1h4c.6 0 1 .4 1 1 0 1.3.3 2.6.8 3.8.1.4.1.8-.2 1.1z"/></svg></span>
+          Call Us Now
+        </a>
+        <a href="#" target="_blank" class="btn-cta-outline">Visit Website →</a>
       </div>
     </div>
 
   </div>
-
-  <!-- BOTTOM CTA STRIP -->
-  <div class="section-cta-strip">
-    <div class="cta-strip-text">
-      <h4>Not sure which program is right for you?</h4>
-      <p>Talk to our academic counsellors — free guidance, no obligation.</p>
-    </div>
-    <div class="cta-strip-actions">
-      <a href="tel:+919876543210" class="btn-cta-primary">
-        <span class="aicon" style="width:14px;height:14px;animation:iconWiggle 1.8s ease-in-out infinite;"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.5 2.5.8 3.8.8.6 0 1 .4 1 1V21c0 .6-.4 1-1 1C10.4 22 2 13.6 2 3c0-.6.4-1 1-1h4c.6 0 1 .4 1 1 0 1.3.3 2.6.8 3.8.1.4.1.8-.2 1.1z"/></svg></span>
-        Call Us Now
-      </a>
-      <a href="#" target="_blank" class="btn-cta-outline">Visit Website →</a>
-    </div>
-  </div>
-
 </section>
 
 <!-- WHY CHOOSE -->
@@ -2342,17 +2695,26 @@
   </div>
 </section>
 
-<!-- ADMISSION PROCESS -->
-<section class="adm3-section" id="admission">
-  <div class="adm3-head">
-    <span class="adm3-label">Admission Process</span>
-    <h2 class="adm3-title">Your Path to Enrolment</h2>
-    <p class="adm3-sub">Scroll down to follow the journey from first enquiry to confirmed seat.</p>
+<!-- ADMISSION PROCESS (horizontal timeline) -->
+<section class="admh-section" id="admission">
+  <div class="admh-head">
+    <span class="admh-label">Admission Process</span>
+    <h2 class="admh-title">Your Path to Enrolment</h2>
+    <p class="admh-sub">Follow the journey from first enquiry to confirmed seat.</p>
   </div>
 
-  <div class="adm3-timeline" id="adm3Timeline">
-    <div class="adm3-spine"><div class="adm3-spine-fill" id="adm3SpineFill"></div></div>
-    <!-- rows injected by the script near the bottom of this page -->
+  <div class="admh-scroll-hint">
+    Scroll to see all steps
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </div>
+
+  <div class="admh-scroller-wrap">
+    <div class="admh-scroller" id="admhScroller">
+      <div class="admh-track" id="admhTrack">
+        <div class="admh-spine"><div class="admh-spine-fill" id="admhSpineFill"></div></div>
+        <!-- items injected by the script near the bottom of this page -->
+      </div>
+    </div>
   </div>
 </section>
 
@@ -2436,19 +2798,6 @@
     </div>
   </div>
 </section>
-
-
-
-
-
-
-
-
-
-
-
-
-  
 
 <!-- TOP RECRUITERS -->
 <section class="section recruiters-section" id="top-recruiters">
@@ -2922,8 +3271,7 @@
     <div class="footer-top">
       <div>
         <div class="footer-logo">
-  <div class="footer-logo-icon"><span>DBU</span></div>
-  <div class="footer-logo-text"><strong>DBU Online</strong><small>Desh Bhagat University</small></div>
+  <img id="footerLogoImg" src="assets/img/logo_2020.png" alt="DBU Online Logo" style="height: 46px; width: auto; max-width: 180px; object-fit: contain; display: block;">
 </div>
         <p class="footer-desc">A UGC-recognised university committed to delivering quality degree programs through flexible, 100% online learning. Powered by Desh Bhagat University, Punjab, India.</p>
         <div class="footer-social">
@@ -3198,7 +3546,6 @@
     var val = input.value.trim();
     if (!val) return;
 
-    // Phone validation at step 3
     if (step === 3) {
       var digits = val.replace(/\D/g, '');
       if (digits.length < 7) {
@@ -3212,7 +3559,6 @@
     input.value = '';
 
     if (step === 1) {
-      // Step 1: Name collected → ask course
       answers.name = val;
       setMode('none');
       showTyping(function () {
@@ -3222,7 +3568,6 @@
       }, 550);
 
     } else if (step === 3) {
-      // Step 3: Phone collected → ask city
       answers.phone = val;
       setMode('none');
       showTyping(function () {
@@ -3234,7 +3579,6 @@
       }, 550);
 
     } else if (step === 4) {
-      // Step 4: City collected → open form
       answers.city = val;
       setMode('none');
       showTyping(function () {
@@ -3246,7 +3590,6 @@
   }
 
   function handleChipClick(course) {
-    // Step 2: Course collected → ask phone
     answers.course = course;
     addMsg(course, 'user');
     setMode('none');
@@ -3263,19 +3606,15 @@
     var overlay = document.getElementById('enquiryModalOverlay');
     if (!overlay) return;
 
-    // Pre-fill name
     var nameInput = overlay.querySelector('input[type="text"]');
     if (nameInput) nameInput.value = answers.name;
 
-    // Pre-fill phone
     var phoneInput = overlay.querySelector('input[type="tel"]');
     if (phoneInput) phoneInput.value = answers.phone;
 
-    // Pre-fill city (looks for a city field by placeholder or name attribute)
     var cityInput = overlay.querySelector('input[placeholder*="city" i], input[name*="city" i]');
     if (cityInput) cityInput.value = answers.city;
 
-    // Pre-select course in dropdown
     var courseSelect = overlay.querySelector('select');
     if (courseSelect && answers.course) {
       var opts = courseSelect.querySelectorAll('option');
@@ -3292,7 +3631,6 @@
     panel.classList.remove('open');
   }
 
-  // Event listeners
   launcher.addEventListener('click', function () {
     panel.classList.toggle('open');
     if (panel.classList.contains('open')) startConversation();
@@ -3322,7 +3660,7 @@ function showFee(type, btn) {
 function drawPath(){
   const stepsContainer = document.getElementById('pathSteps');
   const svg = document.getElementById('pathSvg');
-  if (!stepsContainer || !svg) return; // guard: skip if not on this page
+  if (!stepsContainer || !svg) return;
 
   const steps = stepsContainer.querySelectorAll('.path-step');
   const wrapRect = stepsContainer.getBoundingClientRect();
@@ -3360,7 +3698,6 @@ function toggleFaq(el) {
   if (!wasOpen) item.classList.add('open');
 }
 
-// -- ACCREDITATION LOGO SLIDER (single instance only) --
 (function () {
   const logos = document.querySelectorAll('.accred-logo');
   if (!logos.length) return;
@@ -3383,10 +3720,9 @@ function toggleFaq(el) {
     current = next;
   }
 
-  setInterval(showNext, 5000); // * set to 5s for now so you can SEE it working -- change to 60000 once confirmed
+  setInterval(showNext, 5000);
 })();
 
-// -- FAQ entrance animation --
 (function(){
   const items = document.querySelectorAll('.faq-item');
   if (!('IntersectionObserver' in window)) {
@@ -3404,7 +3740,6 @@ function toggleFaq(el) {
   items.forEach(i => obs.observe(i));
 })();
 
-// -- Feature cards entrance animation --
 (function(){
   const items = document.querySelectorAll('.feat-card');
   if (!items.length) return;
@@ -3423,7 +3758,6 @@ function toggleFaq(el) {
   items.forEach(i => obs.observe(i));
 })();
 
-// -- Programs section entrance animation --
 (function(){
   const sec = document.getElementById('programs');
   if (!sec) return;
@@ -3472,9 +3806,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal();
   });
 
-  /* Auto-popup: bring the enquiry form back every 30 seconds as a gentle
-     reminder, unless it's already open (so we never interrupt someone
-     mid-typing or restack the open animation on top of itself). */
   setInterval(function () {
     if (!overlay.classList.contains('active')) {
       openModal();
@@ -3499,17 +3830,13 @@ document.addEventListener('DOMContentLoaded', function () {
   reveals.forEach(el => obs.observe(el));
 });
 
-/* -- SCROLL PROGRESS RING --
-   Fills clockwise as the page scrolls down and unwinds as it scrolls back
-   up, with the live percentage shown in the centre. Clicking it scrolls
-   smoothly back to the top of the page. */
 (function () {
   const fillCircle = document.getElementById('spFill');
   const label = document.getElementById('spLabel');
   const btn = document.getElementById('scrollProgressBtn');
   if (!fillCircle || !label || !btn) return;
 
-  const CIRCUMFERENCE = 2 * Math.PI * 22; // matches r=22 on the SVG circle
+  const CIRCUMFERENCE = 2 * Math.PI * 22;
 
   function updateProgress() {
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -3539,12 +3866,6 @@ document.addEventListener('DOMContentLoaded', function () {
   updateProgress();
 })();
 
-/* -- HERO BANNER CAROUSEL --
-   Auto-scrolls through all 10 banner images every 3 seconds with a smooth
-   crossfade. Each banner's exact file extension is auto-detected (tries
-   .jpg/.jpeg/.png/.webp) so this works regardless of how your files were
-   saved — no manual editing needed as long as they're named
-   "banner 1" ... "banner 10" inside /assets/. */
 (function () {
   const carousel = document.getElementById('heroBgCarousel');
   if (!carousel) return;
@@ -3571,7 +3892,7 @@ document.addEventListener('DOMContentLoaded', function () {
     Array.from({ length: TOTAL_BANNERS }, (_, idx) => resolveBanner(idx + 1))
   ).then((sources) => {
     const found = sources.filter(Boolean);
-    if (!found.length) return; // no banners found — leave the gradient background as-is
+    if (!found.length) return;
 
     found.forEach((src, i) => {
       const layer = document.createElement('div');
@@ -3581,7 +3902,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const layers = Array.from(carousel.querySelectorAll('.hero-bg-layer'));
-    if (layers.length < 2) return; // only one image — nothing to rotate
+    if (layers.length < 2) return;
 
     let current = 0;
     setInterval(function () {
@@ -3593,7 +3914,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 })();
 
-// Auto-detect certificate file extension (tries common formats)
 (function () {
   var img = document.getElementById('certificateImg');
   if (!img) return;
@@ -3606,17 +3926,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 })();
-/* Chatbot widget is now inlined directly above — no runtime fetch needed. */
 
-/* -- ADMISSION PROCESS TIMELINE --
-   Inlined directly into this page (no fetch, no second file, no runtime
-   reconstruction of <style>/<script> tags) so the browser just parses and
-   runs it like any normal part of the page -- nothing to go wrong. */
+/* -- ADMISSION PROCESS (horizontal) --
+   Populates the horizontal scroller and drives the left-to-right
+   progress spine as the user scrolls the strip sideways. */
 (function () {
-  const timeline = document.getElementById('adm3Timeline');
-  if (!timeline) return;
-  if (timeline.dataset.admInit === '1') return;
-  timeline.dataset.admInit = '1';
+  const scroller = document.getElementById('admhScroller');
+  const track = document.getElementById('admhTrack');
+  if (!scroller || !track) return;
+  if (track.dataset.admhInit === '1') return;
+  track.dataset.admhInit = '1';
 
   const ICONS = {
     enquiry: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 11-3.8-7.1L21 3l-1 4.4"/></svg>',
@@ -3638,7 +3957,7 @@ document.addEventListener('DOMContentLoaded', function () {
     { key: 'upload', color: '#2a9d8f', title: 'Upload Documents',
       desc: 'Upload marksheets, ID proof and a recent photograph through the student portal.' },
     { key: 'verify', color: '#e9c46a', title: 'Document Verification',
-      desc: "The admission cell reviews your documents and confirms eligibility -- you're notified the moment it's approved." },
+      desc: "The admission cell reviews your documents and confirms eligibility — you're notified the moment it's approved." },
     { key: 'fee', color: '#f4a261', title: 'Fee Payment',
       desc: 'Pay via UPI, net banking, card, or an easy EMI plan. Instant receipt on payment.' },
     { key: 'confirm', color: '#6a4c93', title: 'Admission Confirmed',
@@ -3646,39 +3965,38 @@ document.addEventListener('DOMContentLoaded', function () {
   ];
 
   STEPS.forEach((s, i) => {
-    const row = document.createElement('div');
-    row.className = 'adm3-row';
-    row.style.setProperty('--c', s.color);
-    row.innerHTML =
-      '<div class="adm3-dot">' + (i + 1) + '</div>' +
-      '<div class="adm3-card">' +
-        '<div class="adm3-card-top">' +
-          '<div class="adm3-card-icon">' + ICONS[s.key] + '</div>' +
+    const item = document.createElement('div');
+    item.className = 'admh-item';
+    item.style.setProperty('--c', s.color);
+    item.innerHTML =
+      '<div class="admh-dot">' + (i + 1) + '</div>' +
+      '<div class="admh-card">' +
+        '<div class="admh-card-top">' +
+          '<div class="admh-card-icon">' + ICONS[s.key] + '</div>' +
           '<div>' +
-            '<div class="adm3-card-eyebrow">Step ' + (i + 1) + ' of ' + STEPS.length + '</div>' +
-            '<div class="adm3-card-title">' + s.title + '</div>' +
+            '<div class="admh-card-eyebrow">Step ' + (i + 1) + ' of ' + STEPS.length + '</div>' +
+            '<div class="admh-card-title">' + s.title + '</div>' +
           '</div>' +
         '</div>' +
-        '<p class="adm3-card-desc">' + s.desc + '</p>' +
+        '<p class="admh-card-desc">' + s.desc + '</p>' +
       '</div>';
-    timeline.appendChild(row);
+    track.appendChild(item);
   });
 
-  const endRow = document.createElement('div');
-  endRow.className = 'adm3-end';
-  endRow.innerHTML =
-    '<div class="adm3-end-dot"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l5 5L20 6"/></svg></div>' +
-    '<div class="adm3-end-text"><strong>You\'re all set \uD83C\uDF89</strong><span>That\'s the full journey, from enquiry to confirmed seat.</span></div>';
-  timeline.appendChild(endRow);
+  const endItem = document.createElement('div');
+  endItem.className = 'admh-end';
+  endItem.innerHTML =
+    '<div class="admh-end-dot"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l5 5L20 6"/></svg></div>' +
+    '<div class="admh-end-text"><strong>You\'re all set 🎉</strong><span>From enquiry to confirmed seat.</span></div>';
+  track.appendChild(endItem);
 
-  const rows = Array.from(timeline.querySelectorAll('.adm3-row'));
-  const spineFill = document.getElementById('adm3SpineFill');
+  const items = Array.from(track.querySelectorAll('.admh-item'));
+  const spineFill = document.getElementById('admhSpineFill');
 
   function revealOnView() {
     if (!('IntersectionObserver' in window)) {
-      rows.forEach(r => r.classList.add('in-view'));
-      endRow.classList.add('in-view');
-      spineFill.style.height = '100%';
+      items.forEach(r => r.classList.add('in-view'));
+      endItem.classList.add('in-view');
       return;
     }
     const obs = new IntersectionObserver((entries) => {
@@ -3688,19 +4006,15 @@ document.addEventListener('DOMContentLoaded', function () {
           obs.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.35 });
-    rows.forEach(r => obs.observe(r));
-    obs.observe(endRow);
+    }, { root: scroller, threshold: 0.5 });
+    items.forEach(r => obs.observe(r));
+    obs.observe(endItem);
   }
 
   function updateSpine() {
-    const rect = timeline.getBoundingClientRect();
-    const vh = window.innerHeight || document.documentElement.clientHeight;
-    const total = rect.height;
-    const start = vh * 0.85;
-    const traveled = start - rect.top;
-    const pct = Math.max(0, Math.min(1, traveled / (total + start - vh * 0.15)));
-    spineFill.style.height = (pct * 100) + '%';
+    const max = scroller.scrollWidth - scroller.clientWidth;
+    const pct = max > 0 ? Math.max(0, Math.min(1, scroller.scrollLeft / max)) : 1;
+    spineFill.style.width = (pct * 100) + '%';
   }
 
   let ticking = false;
@@ -3712,10 +4026,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   revealOnView();
   updateSpine();
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
+  scroller.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', updateSpine);
 })();
-// Auto-detect industry image file extension (tries common formats)
+
 (function () {
   var img = document.getElementById('industryImg');
   if (!img) return;
@@ -3728,7 +4042,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 })();
-// Auto-detect logo file extension (tries common formats)
+
 (function () {
   var img = document.getElementById('navLogoImg');
   if (!img) return;
@@ -3740,6 +4054,130 @@ document.addEventListener('DOMContentLoaded', function () {
       img.src = 'assets/img/logo_2020.' + exts[i];
     }
   };
+})();
+
+(function () {
+  var img = document.getElementById('footerLogoImg');
+  if (!img) return;
+  var exts = ['png', 'jpg', 'jpeg', 'webp', 'PNG', 'JPG'];
+  var i = 0;
+  img.onerror = function () {
+    i++;
+    if (i < exts.length) {
+      img.src = 'assets/img/logo_2020.' + exts[i];
+    }
+  };
+})();
+
+/* -- UG/PG PROGRAM CARD PHOTOS --
+   Tries common file extensions per program; if none exist, the gradient
+   background + icon placeholder (already in the markup) stays visible. */
+(function () {
+  var imgs = document.querySelectorAll('.ugpg-photo[data-basename]');
+  if (!imgs.length) return;
+  var exts = ['jpg', 'jpeg', 'png', 'webp', 'JPG', 'PNG'];
+
+  imgs.forEach(function (img) {
+    var base = img.getAttribute('data-basename');
+    var i = 0;
+
+    function tryNext() {
+      if (i >= exts.length) return; // no file found — icon placeholder stays visible
+      img.src = 'assets/img/' + base + '.' + exts[i];
+    }
+
+    img.addEventListener('load', function () {
+      var icon = img.previousElementSibling;
+      if (icon) icon.style.display = 'none';
+    });
+    img.addEventListener('error', function () {
+      i++;
+      tryNext();
+    });
+
+    tryNext();
+  });
+})();
+
+/* -- UG/PG PROGRAMS: TABS + CAROUSEL ARROWS -- */
+(function () {
+  var tabs = document.querySelectorAll('.ugpg-tab');
+  var panels = document.querySelectorAll('.ugpg-panel');
+  if (!tabs.length) return;
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var target = tab.getAttribute('data-target');
+      tabs.forEach(function (t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      panels.forEach(function (p) {
+        if (p.getAttribute('data-panel') === target) {
+          p.style.display = 'block';
+          p.classList.add('active');
+        } else {
+          p.style.display = 'none';
+          p.classList.remove('active');
+        }
+      });
+    });
+  });
+
+  document.querySelectorAll('.ugpg-carousel-wrap').forEach(function (wrap) {
+    var track = wrap.querySelector('.ugpg-track');
+    var prev = wrap.querySelector('.ugpg-prev');
+    var next = wrap.querySelector('.ugpg-next');
+    if (!track || !prev || !next) return;
+
+    function scrollByCard(dir) {
+      var card = track.querySelector('.ugpg-card');
+      var amount = card ? card.getBoundingClientRect().width + 22 : 300;
+      track.scrollBy({ left: dir * amount, behavior: 'smooth' });
+    }
+    prev.addEventListener('click', function () { scrollByCard(-1); });
+    next.addEventListener('click', function () { scrollByCard(1); });
+  });
+})();
+
+/* -- MOBILE NAV TOGGLE -- */
+(function () {
+  var toggle = document.getElementById('navToggle');
+  var panel = document.getElementById('navMobilePanel');
+  if (!toggle || !panel) return;
+
+  function closeMenu() {
+    toggle.classList.remove('open');
+    panel.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  toggle.addEventListener('click', function () {
+    var isOpen = panel.classList.toggle('open');
+    toggle.classList.toggle('open', isOpen);
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+
+  panel.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', closeMenu);
+  });
+
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 860) closeMenu();
+  });
+})();
+
+(function () {
+  [['ranking1Img', 'ranking'], ['ranking2Img', 'ranking2']].forEach(function (pair) {
+    var img = document.getElementById(pair[0]);
+    if (!img) return;
+    var exts = ['png', 'jpg', 'jpeg', 'webp', 'PNG', 'JPG'];
+    var i = 0;
+    img.onerror = function () {
+      i++;
+      if (i < exts.length) {
+        img.src = 'assets/img/' + pair[1] + '.' + exts[i];
+      }
+    };
+  });
 })();
 </script>
 
