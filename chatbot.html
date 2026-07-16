@@ -1,0 +1,324 @@
+<!-- ============================================================
+     Admissions Chatbot Widget — DBU Online
+     4-question flow: Name → Course → Phone → City → Form
+     ============================================================ -->
+
+<style>
+  #cbwRoot, #cbwRoot *, #cbwRoot *::before, #cbwRoot *::after { box-sizing: border-box; }
+
+  .cbw-launcher {
+    position: fixed; right: 24px; bottom: 92px; z-index: 998;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: linear-gradient(135deg, #02446c 0%, #1a6fa8 100%);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; border: none;
+    box-shadow: 0 6px 20px rgba(4,51,89,.35);
+    transition: transform .2s ease;
+    animation: cbwBob 2.6s ease-in-out infinite;
+  }
+  .cbw-launcher::before {
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    border: 2px solid #1a6fa8; animation: cbwPulseRing 2.2s ease-out infinite;
+  }
+  .cbw-launcher:hover { transform: scale(1.08); }
+  .cbw-launcher svg { width: 26px; height: 26px; color: #fff; position: relative; z-index: 1; }
+  .cbw-launcher .cbw-dot {
+    position: absolute; top: -3px; right: -3px; width: 14px; height: 14px;
+    background: #e2632c; border: 2px solid #fff; border-radius: 50%;
+    animation: cbwBlink 1.8s infinite;
+  }
+  @keyframes cbwBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+  @keyframes cbwPulseRing { 0% { transform: scale(.85); opacity: .9; } 70% { transform: scale(1.3); opacity: 0; } 100% { transform: scale(1.3); opacity: 0; } }
+  @keyframes cbwBlink { 0%,40%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+  .cbw-panel {
+    position: fixed; right: 24px; bottom: 160px; z-index: 999;
+    width: 336px; max-width: calc(100vw - 32px);
+    height: 480px; max-height: 70vh;
+    background: #fff; border-radius: 16px; overflow: hidden;
+    display: flex; flex-direction: column;
+    box-shadow: 0 22px 60px rgba(4,51,89,.28);
+    transform-origin: bottom right;
+    transform: scale(.85) translateY(16px);
+    opacity: 0; pointer-events: none;
+    transition: transform .32s cubic-bezier(.34,1.45,.64,1), opacity .26s ease;
+  }
+  .cbw-panel.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: auto; }
+
+  .cbw-head {
+    background: linear-gradient(135deg, #02446c 0%, #1a6fa8 100%); color: #fff;
+    padding: 14px 14px; display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+  }
+  .cbw-avatar {
+    width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.18);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .cbw-avatar svg { width: 19px; height: 19px; color: #fff; }
+  .cbw-head-text { flex: 1; min-width: 0; }
+  .cbw-head-text strong { display: block; font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 700; }
+  .cbw-head-text span { display: flex; align-items: center; gap: 5px; font-size: 11px; color: rgba(255,255,255,.78); margin-top: 1px; }
+  .cbw-head-text span::before { content: ''; width: 7px; height: 7px; background: #4cdc7a; border-radius: 50%; animation: cbwBlink 1.6s infinite; }
+  .cbw-close { background: none; border: none; color: rgba(255,255,255,.85); font-size: 20px; line-height: 1; cursor: pointer; padding: 4px 6px; flex-shrink: 0; }
+  .cbw-close:hover { color: #fff; }
+
+  .cbw-body {
+    flex: 1; overflow-y: auto; padding: 14px; background: #eef3f6;
+    display: flex; flex-direction: column; gap: 9px;
+  }
+  .cbw-msg {
+    max-width: 82%; padding: 9px 13px; border-radius: 14px; font-size: 13.2px; line-height: 1.5;
+    animation: cbwPop .28s cubic-bezier(.34,1.45,.64,1) both;
+  }
+  .cbw-msg.bot { align-self: flex-start; background: #fff; color: #1a1a2e; border: 1px solid #dde3e8; border-radius: 14px 14px 14px 4px; box-shadow: 0 2px 8px rgba(4,51,89,.05); }
+  .cbw-msg.user { align-self: flex-end; background: #1a6fa8; color: #fff; border-radius: 14px 14px 4px 14px; }
+  @keyframes cbwPop { from { opacity: 0; transform: translateY(8px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+  .cbw-typing {
+    align-self: flex-start; display: inline-flex; gap: 4px; padding: 11px 14px;
+    background: #fff; border: 1px solid #dde3e8; border-radius: 14px 14px 14px 4px;
+    width: fit-content; animation: cbwPop .25s ease both;
+  }
+  .cbw-typing span { width: 6px; height: 6px; border-radius: 50%; background: #9aa6bd; animation: cbwTypingBounce 1.1s ease-in-out infinite; }
+  .cbw-typing span:nth-child(2) { animation-delay: .15s; }
+  .cbw-typing span:nth-child(3) { animation-delay: .3s; }
+  @keyframes cbwTypingBounce { 0%,60%,100% { transform: translateY(0); opacity:.5; } 30% { transform: translateY(-4px); opacity:1; } }
+
+  .cbw-chips { display: none; flex-wrap: wrap; gap: 8px; padding: 4px 14px 14px; background: #eef3f6; flex-shrink: 0; }
+  .cbw-chip {
+    background: #fff; border: 1.5px solid #1a6fa8; color: #1a6fa8; font-weight: 600;
+    font-size: 12.5px; padding: 8px 14px; border-radius: 20px; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all .2s;
+  }
+  .cbw-chip:hover { background: #1a6fa8; color: #fff; transform: translateY(-2px); }
+
+  .cbw-foot { display: none; align-items: center; gap: 8px; padding: 10px 12px; border-top: 1px solid #dde3e8; background: #fff; flex-shrink: 0; }
+  .cbw-foot input {
+    flex: 1; border: 1.5px solid #dde3e8; border-radius: 20px; padding: 9px 14px;
+    font-size: 13px; font-family: 'Inter', sans-serif; outline: none; color: #1a1a2e;
+  }
+  .cbw-foot input:focus { border-color: #1a6fa8; }
+  .cbw-send {
+    width: 36px; height: 36px; border-radius: 50%; background: #1a6fa8; border: none;
+    color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer;
+    flex-shrink: 0; transition: background .2s, transform .15s;
+  }
+  .cbw-send:hover { background: #02446c; transform: scale(1.06); }
+  .cbw-send svg { width: 16px; height: 16px; }
+
+  @media (max-width: 480px) {
+    .cbw-launcher { right: 18px; bottom: 86px; width: 50px; height: 50px; }
+    .cbw-panel { right: 14px; bottom: 148px; width: calc(100vw - 28px); }
+  }
+</style>
+
+<div id="cbwRoot">
+  <button type="button" class="cbw-launcher" id="cbwLauncher" aria-label="Open admissions chat assistant">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 01-1.2 4.4L21 20l-4.3-1.1a8.5 8.5 0 11-4.7-15.4 8.5 8.5 0 019 8z"/><circle cx="8.5" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="15.5" cy="11.5" r="1" fill="currentColor" stroke="none"/></svg>
+    <span class="cbw-dot"></span>
+  </button>
+
+  <div class="cbw-panel" id="cbwPanel">
+    <div class="cbw-head">
+      <div class="cbw-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8 7V5a4 4 0 018 0v2"/><circle cx="9" cy="13.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+      </div>
+      <div class="cbw-head-text">
+        <strong>Admissions Assistant</strong>
+        <span>Online now</span>
+      </div>
+      <button type="button" class="cbw-close" id="cbwClose" aria-label="Close chat">&times;</button>
+    </div>
+
+    <div class="cbw-body" id="cbwBody"></div>
+
+    <div class="cbw-chips" id="cbwChips">
+      <button type="button" class="cbw-chip">BBA</button>
+      <button type="button" class="cbw-chip">MBA</button>
+      <button type="button" class="cbw-chip">MCA</button>
+      <button type="button" class="cbw-chip">Not sure yet</button>
+    </div>
+
+    <div class="cbw-foot" id="cbwFoot">
+      <input type="text" id="cbwInput" placeholder="Type your answer..." autocomplete="off">
+      <button type="button" class="cbw-send" id="cbwSend" aria-label="Send">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var root = document.getElementById('cbwRoot');
+  if (!root) return;
+  if (root.dataset.cbwInit === '1') return;
+  root.dataset.cbwInit = '1';
+
+  var launcher = document.getElementById('cbwLauncher');
+  var panel    = document.getElementById('cbwPanel');
+  var closeBtn = document.getElementById('cbwClose');
+  var body     = document.getElementById('cbwBody');
+  var chips    = document.getElementById('cbwChips');
+  var foot     = document.getElementById('cbwFoot');
+  var input    = document.getElementById('cbwInput');
+  var sendBtn  = document.getElementById('cbwSend');
+
+  var answers = { name: '', course: '', phone: '', city: '' };
+  var step = 0;
+  var started = false;
+
+  function addMsg(text, who) {
+    var div = document.createElement('div');
+    div.className = 'cbw-msg ' + who;
+    div.textContent = text;
+    body.appendChild(div);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function showTyping(cb, delay) {
+    var t = document.createElement('div');
+    t.className = 'cbw-typing';
+    t.innerHTML = '<span></span><span></span><span></span>';
+    body.appendChild(t);
+    body.scrollTop = body.scrollHeight;
+    setTimeout(function () { t.remove(); cb(); }, delay || 700);
+  }
+
+  function setMode(mode) {
+    foot.style.display  = (mode === 'text') ? 'flex' : 'none';
+    chips.style.display = (mode === 'chips') ? 'flex' : 'none';
+    if (mode === 'text') { input.value = ''; input.focus(); }
+  }
+
+  function startConversation() {
+    if (started) return;
+    started = true;
+    setMode('none');
+    showTyping(function () {
+      addMsg("Hi! 👋 I'm the admissions assistant for DBU Online. Just 4 quick questions and I'll get you connected.", 'bot');
+      showTyping(function () {
+        addMsg("First — what's your name?", 'bot');
+        step = 1;
+        setMode('text');
+        input.type = 'text';
+        input.placeholder = 'Type your name...';
+      }, 550);
+    }, 700);
+  }
+
+  function handleTextSubmit() {
+    var val = input.value.trim();
+    if (!val) return;
+
+    // Phone validation at step 3
+    if (step === 3) {
+      var digits = val.replace(/\D/g, '');
+      if (digits.length < 7) {
+        input.placeholder = 'Please enter a valid phone number';
+        input.value = '';
+        return;
+      }
+    }
+
+    addMsg(val, 'user');
+    input.value = '';
+
+    if (step === 1) {
+      // Step 1: Name collected → ask course
+      answers.name = val;
+      setMode('none');
+      showTyping(function () {
+        addMsg('Nice to meet you, ' + val.split(' ')[0] + '! Which program are you interested in?', 'bot');
+        step = 2;
+        setMode('chips');
+      }, 550);
+
+    } else if (step === 3) {
+      // Step 3: Phone collected → ask city
+      answers.phone = val;
+      setMode('none');
+      showTyping(function () {
+        addMsg('Almost there! Which city are you from?', 'bot');
+        step = 4;
+        setMode('text');
+        input.type = 'text';
+        input.placeholder = 'Type your city...';
+      }, 550);
+
+    } else if (step === 4) {
+      // Step 4: City collected → open form
+      answers.city = val;
+      setMode('none');
+      showTyping(function () {
+        addMsg('Perfect, thanks ' + answers.name.split(' ')[0] + '! 🎉 I\'ve opened our enquiry form with your details — just confirm and submit.', 'bot');
+        step = 5;
+        openEnquiryModal();
+      }, 550);
+    }
+  }
+
+  function handleChipClick(course) {
+    // Step 2: Course collected → ask phone
+    answers.course = course;
+    addMsg(course, 'user');
+    setMode('none');
+    showTyping(function () {
+      addMsg('Great choice! What\'s your WhatsApp or mobile number? We\'ll send you details there.', 'bot');
+      step = 3;
+      setMode('text');
+      input.type = 'tel';
+      input.placeholder = 'Enter your phone number...';
+    }, 550);
+  }
+
+  function openEnquiryModal() {
+    var overlay = document.getElementById('enquiryModalOverlay');
+    if (!overlay) return;
+
+    // Pre-fill name
+    var nameInput = overlay.querySelector('input[type="text"]');
+    if (nameInput) nameInput.value = answers.name;
+
+    // Pre-fill phone
+    var phoneInput = overlay.querySelector('input[type="tel"]');
+    if (phoneInput) phoneInput.value = answers.phone;
+
+    // Pre-fill city (looks for a city field by placeholder or name attribute)
+    var cityInput = overlay.querySelector('input[placeholder*="city" i], input[name*="city" i]');
+    if (cityInput) cityInput.value = answers.city;
+
+    // Pre-select course in dropdown
+    var courseSelect = overlay.querySelector('select');
+    if (courseSelect && answers.course) {
+      var opts = courseSelect.querySelectorAll('option');
+      for (var i = 0; i < opts.length; i++) {
+        if (opts[i].text.toUpperCase().indexOf(answers.course.toUpperCase()) === 0) {
+          courseSelect.value = opts[i].value;
+          break;
+        }
+      }
+    }
+
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    panel.classList.remove('open');
+  }
+
+  // Event listeners
+  launcher.addEventListener('click', function () {
+    panel.classList.toggle('open');
+    if (panel.classList.contains('open')) startConversation();
+  });
+
+  closeBtn.addEventListener('click', function () { panel.classList.remove('open'); });
+  sendBtn.addEventListener('click', handleTextSubmit);
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') handleTextSubmit(); });
+
+  var chipButtons = chips.querySelectorAll('.cbw-chip');
+  for (var c = 0; c < chipButtons.length; c++) {
+    chipButtons[c].addEventListener('click', function () {
+      handleChipClick(this.textContent.trim());
+    });
+  }
+})();
+</script>

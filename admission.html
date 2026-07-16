@@ -1,0 +1,252 @@
+<style>
+.adm3-section, .adm3-section *, .adm3-section *::before, .adm3-section *::after { box-sizing: border-box; }
+
+.adm3-section {
+  padding: 80px 20px 90px;
+  background: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+.adm3-section::before {
+  content: '';
+  position: absolute; top: -100px; left: -120px;
+  width: 360px; height: 360px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(26,111,212,.08) 0%, transparent 70%);
+  animation: adm3Drift 17s ease-in-out infinite;
+  pointer-events: none;
+}
+.adm3-section::after {
+  content: '';
+  position: absolute; bottom: -120px; right: -100px;
+  width: 320px; height: 320px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(237,50,55,.06) 0%, transparent 70%);
+  animation: adm3Drift 21s ease-in-out infinite reverse;
+  pointer-events: none;
+}
+@keyframes adm3Drift { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(22px,16px) scale(1.1); } }
+
+.adm3-head { text-align: center; max-width: 620px; margin: 0 auto 56px; position: relative; z-index: 1; }
+.adm3-label {
+  display: inline-block; background: rgba(76,121,220,.1); color: #1a6fa8;
+  font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 20px; margin-bottom: 10px; font-family: 'Inter', sans-serif;
+}
+.adm3-title {
+  font-family: 'Poppins', sans-serif; font-size: clamp(22px,3vw,34px); font-weight: 800;
+  color: #02446c; line-height: 1.25; margin-bottom: 8px;
+}
+.adm3-sub { font-size: 15px; color: #777; line-height: 1.7; font-family: 'Inter', sans-serif; }
+
+/* ── TIMELINE ── */
+.adm3-timeline {
+  max-width: 760px; margin: 0 auto; position: relative; z-index: 1;
+  padding-left: 56px;
+}
+.adm3-spine {
+  position: absolute; top: 6px; bottom: 6px; left: 19px; width: 4px;
+  background: #e6ecf7; border-radius: 4px;
+}
+.adm3-spine-fill {
+  position: absolute; top: 0; left: 0; width: 100%; height: 0%;
+  background: linear-gradient(180deg, #e63946, #1a6fa8, #0e8fa8, #2a9d8f, #e9c46a, #f4a261, #6a4c93);
+  border-radius: 4px;
+  transition: height .15s linear;
+}
+
+.adm3-row {
+  position: relative;
+  padding-bottom: 50px;
+  opacity: 0;
+  transform: translateX(-22px);
+  transition: opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1);
+}
+.adm3-row:last-child { padding-bottom: 0; }
+.adm3-row.in-view { opacity: 1; transform: translateX(0); }
+
+.adm3-dot {
+  position: absolute; left: -56px; top: 0;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: #fff; border: 3px solid #d8e1f3; color: #9aa6bd;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 14px;
+  transition: border-color .4s, color .4s, background .4s, box-shadow .4s, transform .4s cubic-bezier(.34,1.6,.64,1);
+  z-index: 2;
+}
+.adm3-row.in-view .adm3-dot {
+  border-color: var(--c, #1a6fa8);
+  color: #fff;
+  background: var(--c, #1a6fa8);
+  box-shadow: 0 6px 18px rgba(4,51,89,.18);
+  transform: scale(1.08);
+  animation: adm3DotSettle .5s ease-out;
+}
+@keyframes adm3DotSettle { 0% { transform: scale(.4) rotate(-25deg); } 60% { transform: scale(1.18) rotate(4deg); } 100% { transform: scale(1.08) rotate(0); } }
+
+.adm3-card {
+  background: #fff; border: 1.5px solid #e6ecf7; border-radius: 14px;
+  padding: 20px 22px; box-shadow: 0 4px 20px rgba(4,51,89,.06);
+  transition: box-shadow .35s, transform .35s, border-color .35s;
+}
+.adm3-row.in-view .adm3-card { border-color: var(--c, #1a6fa8); box-shadow: 0 14px 34px rgba(4,51,89,.12); }
+.adm3-card:hover { transform: translateY(-3px); }
+
+.adm3-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.adm3-card-icon {
+  width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; color: #fff;
+  background: var(--c, #1a6fa8);
+  transform: scale(.5); opacity: 0;
+  transition: transform .45s cubic-bezier(.34,1.6,.64,1) .15s, opacity .4s ease .15s;
+}
+.adm3-row.in-view .adm3-card-icon { transform: scale(1); opacity: 1; }
+.adm3-card-icon svg { width: 20px; height: 20px; }
+.adm3-card-eyebrow { font-size: 10.5px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: #9aa6bd; }
+.adm3-card-title { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 16.5px; color: #02446c; }
+.adm3-card-desc { font-size: 13.8px; color: #56657d; line-height: 1.65; }
+
+/* ── END BADGE ── */
+.adm3-end {
+  margin-top: 8px; margin-left: -56px; padding-left: 56px;
+  display: flex; align-items: center; gap: 14px;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.adm3-end.in-view { opacity: 1; transform: translateY(0); }
+.adm3-end-dot {
+  width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; margin-left: -56px;
+  background: linear-gradient(135deg, #1a9e5b, #16895a);
+  display: flex; align-items: center; justify-content: center; color: #fff;
+  box-shadow: 0 8px 20px rgba(26,158,91,.3);
+}
+.adm3-end-dot svg { width: 18px; height: 18px; }
+.adm3-end-text strong { display: block; color: #02446c; font-family: 'Poppins', sans-serif; font-size: 14.5px; }
+.adm3-end-text span { font-size: 12.5px; color: #8a93a6; }
+
+@media (max-width: 600px) {
+  .adm3-timeline { padding-left: 44px; }
+  .adm3-spine { left: 15px; }
+  .adm3-dot { left: -44px; width: 34px; height: 34px; font-size: 12.5px; }
+  .adm3-end-dot { margin-left: -44px; width: 34px; height: 34px; }
+}
+</style>
+
+<section class="adm3-section" id="admission">
+  <div class="adm3-head">
+    <span class="adm3-label">Admission Process</span>
+    <h2 class="adm3-title">Your Path to Enrolment</h2>
+    <p class="adm3-sub">Scroll down to follow the journey from first enquiry to confirmed seat.</p>
+  </div>
+
+  <div class="adm3-timeline" id="adm3Timeline">
+    <div class="adm3-spine"><div class="adm3-spine-fill" id="adm3SpineFill"></div></div>
+    <!-- rows injected by JS -->
+  </div>
+</section>
+
+<script>
+(function () {
+  const timeline = document.getElementById('adm3Timeline');
+  if (!timeline) return;
+  if (timeline.dataset.admInit === '1') return; // never double-initialise
+  timeline.dataset.admInit = '1';
+
+  const ICONS = {
+    enquiry: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 11-3.8-7.1L21 3l-1 4.4"/></svg>',
+    counsel: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 8.2c1.2.3 2 1.4 2 2.7 0 1.1-.6 2.1-1.5 2.5M19.8 20c0-2.4-1.7-4.4-4-5.3"/></svg>',
+    form: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>',
+    upload: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>',
+    verify: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>',
+    fee: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/><circle cx="7" cy="14.5" r="1.4" fill="currentColor" stroke="none"/></svg>',
+    confirm: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l5 5L20 6"/></svg>'
+  };
+
+  const STEPS = [
+    { key: 'enquiry', color: '#e63946', title: 'Enquiry Generation',
+      desc: "Submit a quick enquiry at dbuonline.in with your name, number and the program you're interested in." },
+    { key: 'counsel', color: '#1a6fa8', title: 'Student Counselling',
+      desc: 'An admission expert calls you within 24 hours to recommend the right program, fee plan and intake.' },
+    { key: 'form', color: '#0e8fa8', title: 'Application Form',
+      desc: 'Fill in the official application form and get your DEB ID registered against your chosen program.' },
+    { key: 'upload', color: '#2a9d8f', title: 'Upload Documents',
+      desc: 'Upload marksheets, ID proof and a recent photograph through the student portal.' },
+    { key: 'verify', color: '#e9c46a', title: 'Document Verification',
+      desc: "The admission cell reviews your documents and confirms eligibility — you're notified the moment it's approved." },
+    { key: 'fee', color: '#f4a261', title: 'Fee Payment',
+      desc: 'Pay via UPI, net banking, card, or an easy EMI plan. Instant receipt on payment.' },
+    { key: 'confirm', color: '#6a4c93', title: 'Admission Confirmed',
+      desc: 'Your official admission letter and LMS access are issued. Welcome aboard!' }
+  ];
+
+  STEPS.forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'adm3-row';
+    row.style.setProperty('--c', s.color);
+    row.innerHTML =
+      '<div class="adm3-dot">' + (i + 1) + '</div>' +
+      '<div class="adm3-card">' +
+        '<div class="adm3-card-top">' +
+          '<div class="adm3-card-icon">' + ICONS[s.key] + '</div>' +
+          '<div>' +
+            '<div class="adm3-card-eyebrow">Step ' + (i + 1) + ' of ' + STEPS.length + '</div>' +
+            '<div class="adm3-card-title">' + s.title + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<p class="adm3-card-desc">' + s.desc + '</p>' +
+      '</div>';
+    timeline.appendChild(row);
+  });
+
+  const endRow = document.createElement('div');
+  endRow.className = 'adm3-end';
+  endRow.innerHTML =
+    '<div class="adm3-end-dot"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l5 5L20 6"/></svg></div>' +
+    '<div class="adm3-end-text"><strong>You\'re all set 🎉</strong><span>That\'s the full journey, from enquiry to confirmed seat.</span></div>';
+  timeline.appendChild(endRow);
+
+  const rows = Array.from(timeline.querySelectorAll('.adm3-row'));
+  const spineFill = document.getElementById('adm3SpineFill');
+
+  function revealOnView() {
+    if (!('IntersectionObserver' in window)) {
+      rows.forEach(r => r.classList.add('in-view'));
+      endRow.classList.add('in-view');
+      spineFill.style.height = '100%';
+      return;
+    }
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.35 });
+    rows.forEach(r => obs.observe(r));
+    obs.observe(endRow);
+  }
+
+  function updateSpine() {
+    const rect = timeline.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    const total = rect.height;
+    /* Fill the spine based on how far the viewport's middle has travelled
+       through the timeline block — fully scroll-driven, no clicks involved. */
+    const start = vh * 0.85;
+    const traveled = start - rect.top;
+    const pct = Math.max(0, Math.min(1, traveled / (total + start - vh * 0.15)));
+    spineFill.style.height = (pct * 100) + '%';
+  }
+
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { updateSpine(); ticking = false; });
+  }
+
+  revealOnView();
+  updateSpine();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+})();
+</script>
